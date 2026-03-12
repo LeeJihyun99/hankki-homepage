@@ -2,7 +2,7 @@ import { Outlet, Link, useLocation } from "react-router";
 import { useState, useEffect } from "react";
 import { Menu, X, Facebook, Instagram, Twitter, ChevronDown } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
-import logoImage from "figma:asset/ebdccef54b3c593911f24df047e078a5ef0b2956.png";
+// import logoImage from "figma:asset/ebdccef54b3c593911f24df047e078a5ef0b2956.png";
 
 export function Layout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -75,7 +75,8 @@ export function Layout() {
           <div className="flex justify-between items-center h-16 sm:h-20 max-w-none">
             {/* Logo */}
             <Link to="/" className="flex items-center">
-              <img src={logoImage} alt="Hankki" className="h-10 sm:h-12" />
+              {/* <img src={logoImage} alt="Hankki" className="h-10 sm:h-12" /> */}
+              <span className="text-2xl font-bold">HANKKI</span>
             </Link>
 
             {/* Desktop Navigation */}
