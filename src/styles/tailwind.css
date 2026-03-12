@@ -1,0 +1,24 @@
+@import 'tailwindcss' source(none);
+@source '../**/*.{js,ts,jsx,tsx}';
+
+@import 'tw-animate-css';
+
+* {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Slick Carousel Custom Styles */
+.slick-dots {
+  bottom: 20px !important;
+}
+
+.slick-dots li button:before {
+  color: white !important;
+  opacity: 0.5 !important;
+  font-size: 10px !important;
+}
+
+.slick-dots li.slick-active button:before {
+  opacity: 1 !important;
+  color: white !important;
+}
