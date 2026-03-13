@@ -334,9 +334,9 @@ export function About() {
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
-        className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-black"
+        className="py-16 sm:py-20 lg:py-24 px-8 sm:px-8 lg:px-8 bg-black"
       >
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           {/* Contact Title */}
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
