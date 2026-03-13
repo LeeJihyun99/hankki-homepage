@@ -2,7 +2,7 @@ import { Outlet, Link, useLocation } from "react-router";
 import { useState, useEffect } from "react";
 import { Menu, X, Facebook, Instagram, Twitter, ChevronDown } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
-// import logoImage from "figma:asset/ebdccef54b3c593911f24df047e078a5ef0b2956.png";
+import logoIMG from "../../assets/hankki_logo.png";
 
 export function Layout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -71,12 +71,11 @@ export function Layout() {
     <div className="min-h-screen bg-black text-white">
       {/* Navigation */}
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navbarBg} ${navbarShadow} ${!isHomePage || leftHero ? 'border-b border-white/10' : ''}`}>
-        <div className="w-full px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-8 sm:px-8 md:px-8 lg:px-8">
           <div className="flex justify-between items-center h-16 sm:h-20 max-w-none">
             {/* Logo */}
             <Link to="/" className="flex items-center">
-              {/* <img src={logoImage} alt="Hankki" className="h-10 sm:h-12" /> */}
-              <span className="text-2xl font-bold">HANKKI</span>
+              <img src={logoIMG} alt="Hankki" className="h-10 sm:h-14" />
             </Link>
 
             {/* Desktop Navigation */}

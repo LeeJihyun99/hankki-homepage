@@ -6,7 +6,6 @@ import { motion } from "motion/react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import heroImage from "../assets/6c35f0f7124035f09deb108d08f6dbfffe20b903.png";
 import { useState } from "react";
 
 const menuItems = [
