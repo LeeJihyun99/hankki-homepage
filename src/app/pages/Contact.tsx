@@ -65,7 +65,7 @@ export function Contact() {
       </section>
 
       {/* Contact & Reservation Section */}
-      <section className="py-16 sm:py-20 lg:py-24 px-8 sm:px-8 lg:px-8 bg-black">
+      <section className="py-16 sm:py-20 lg:py-24 px-8 sm:px- lg:px-8 bg-black">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
             {/* Contact Information */}
@@ -498,3 +498,5 @@ export function Contact() {
     </div>
   );
 }
+
+

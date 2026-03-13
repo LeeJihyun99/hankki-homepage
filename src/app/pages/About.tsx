@@ -495,12 +495,18 @@ export function About() {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
               viewport={{ once: true }}
-              className="bg-white/5 rounded-2xl overflow-hidden h-64 lg:h-full min-h-[300px] flex items-center justify-center"
+              className="bg-white/5 rounded-3xl overflow-hidden border border-white/10 w-full h-[400px] lg:h-full min-h-[400px]"
             >
-              <div className="text-center">
-                <MapPin size={48} className="mx-auto mb-4 text-white/40" />
-                <p className="text-white/40">Map Location</p>
-              </div>
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2514.123456789!2d6.9385!3d50.9389!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47bf250000000001%3A0x000000000000000!2zQnJhYmFudGVyIFN0ci4gNDIsIDUwNjcyIEvDtmxuLCBHZXJtYW55!5e0!3m2!1sko!2sde!4v1710000000000!5m2!1sko!2sde" 
+                width="100%" 
+                height="100%" 
+                style={{ border: 0 }} // 이 부분을 수정했습니다!
+                allowFullScreen 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Hankki Köln Map"
+              />
             </motion.div>
           </div>
         </div>
