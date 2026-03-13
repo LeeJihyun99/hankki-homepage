@@ -7,22 +7,25 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useState } from "react";
+import menuIMG1 from "../../assets/home_menu_section_items/home_menu_chickenwithbeer.png";
+import menuIMG2 from "../../assets/home_menu_section_items/home_menu_budaejjigae_soju.png";
+import menuIMG3 from "../../assets/home_menu_section_items/home_menu_pancakewithmakgeoli.png";
 
 const menuItems = [
   {
-    name: "home.menu.item1.name",
-    description: "home.menu.item1.desc",
-    image: "https://images.unsplash.com/photo-1747228469031-c5fc60b9d9f9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxrb3JlYW4lMjBmcmllZCUyMGNoaWNrZW4lMjBjcmlzcHklMjBnb2xkZW58ZW4xfHx8fDE3NzI5MzI3NDZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    name: "Chicken & Beer (Chimaek)",
+    description: "Crunchy, golden-fried Korean chicken paired with a refreshing ice-cold Cass beer—the ultimate soul food combo.",
+    image: menuIMG1,
   },
   {
-    name: "home.menu.item2.name",
-    description: "home.menu.item2.desc",
-    image: "https://images.unsplash.com/photo-1624726175512-19b9baf9fbd1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxrb3JlYW4lMjBjaGlja2VuJTIwd2luZ3MlMjBzcGljeSUyMHNhdWNlfGVufDF8fHx8MTc3MjkzMjc0Nnww&ixlib=rb-4.1.0&q=80&w=1080",
+    name: "Budae Jjigae & Soju",
+    description: "A hearty, spicy army base stew loaded with ham, sausage, and ramen, perfectly complemented by a smooth shot of Soju.",
+    image: menuIMG2,
   },
   {
-    name: "home.menu.item3.name",
-    description: "home.menu.item3.desc",
-    image: "https://images.unsplash.com/photo-1747228469031-c5fc60b9d9f9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxrb3JlYW4lMjBmcmllZCUyMGNoaWNrZW4lMjBjcmlzcHklMjBnb2xkZW58ZW4xfHx8fDE3NzI5MzI3NDZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    name: "Seafood Pancake & Makgeolli",
+    description: "Crispy Haemul Pajeon bursting with fresh seafood, traditionally enjoyed with a bowl of sweet and tangy milky rice wine.",
+    image: menuIMG3,
   },
 ];
 
@@ -31,7 +34,7 @@ function NextArrow(props: any) {
   return (
     <button
       onClick={onClick}
-      className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/20 hover:bg-white/30 backdrop-blur-sm p-3 rounded-full transition-all"
+      className="absolute -right-4 sm:-right-12 top-1/2 -translate-y-1/2 z-10 bg-white/10 hover:bg-white/30 backdrop-blur-sm p-3 rounded-full transition-all"
       aria-label="Next"
     >
       <ChevronRight size={24} className="text-white" />
@@ -44,7 +47,7 @@ function PrevArrow(props: any) {
   return (
     <button
       onClick={onClick}
-      className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/20 hover:bg-white/30 backdrop-blur-sm p-3 rounded-full transition-all"
+      className="absolute -left-4 sm:-left-12 top-1/2 -translate-y-1/2 z-10 bg-white/10 hover:bg-white/30 backdrop-blur-sm p-3 rounded-full transition-all"
       aria-label="Previous"
     >
       <ChevronLeft size={24} className="text-white" />
@@ -57,7 +60,8 @@ export function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const sliderSettings = {
-    dots: true,
+    // dots: false,
+    // dotsClass: "slick-dots custom-dots-left",
     infinite: true,
     speed: 500,
     slidesToShow: 1,
@@ -66,8 +70,10 @@ export function Home() {
     autoplaySpeed: 4000,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
+    // arrows: true,
     beforeChange: (oldIndex: number, newIndex: number) => {
       setCurrentSlide(newIndex);
+
     },
   };
 
@@ -170,12 +176,13 @@ export function Home() {
       </motion.section>
 
       {/* Menu Section - Carousel with Content Side by Side */}
+      {/* Menu Section */}
       <motion.section 
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
-        className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-black"
+        className="py-16 sm:py-20 lg:py-24 px-8 sm:px-16 lg:px-24 bg-black overflow-hidden" 
       >
         <div className="max-w-7xl mx-auto">
           <motion.h2 
@@ -185,53 +192,43 @@ export function Home() {
             viewport={{ once: true }}
             className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-12 sm:mb-16"
           >
-            Menu
+            Menu Highlights
           </motion.h2>
           
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            {/* Carousel */}
-            <motion.div 
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="rounded-2xl overflow-hidden"
-            >
-              <Slider {...sliderSettings}>
-                {menuItems.map((item, index) => (
-                  <div key={index} className="relative h-[400px] sm:h-[500px]">
-                    <ImageWithFallback
-                      src={item.image}
-                      alt={t(item.name)}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ))}
-              </Slider>
-            </motion.div>
+          <div className="relative"> {/* Container for outside arrows */}
+            <Slider {...sliderSettings}>
+              {menuItems.map((item, index) => (
+                <div key={index} className="outline-none">
+                  <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center px-4">
+                    {/* Image Column */}
+                    <div className="rounded-2xl overflow-hidden h-[300px] sm:h-[450px]">
+                      <ImageWithFallback
+                        src={item.image}
+                        alt={item.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
 
-            {/* Content Card */}
-            <motion.div 
-              key={currentSlide}
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              className="space-y-6"
-            >
-              <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
-                Chicken
-              </h3>
-              <p className="text-white/70 text-base sm:text-lg leading-relaxed">
-                {t(menuItems[currentSlide].description)}
-              </p>
-              <Link
-                to="/menu"
-                className="inline-flex items-center gap-2 text-white hover:text-white/80 transition-colors text-lg"
-              >
-                <span>Go to menu</span>
-                <ChevronRight size={24} />
-              </Link>
-            </motion.div>
+                    {/* Text Column - Now slides with the image */}
+                    <div className="space-y-6">
+                      <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
+                        {item.name}
+                      </h3>
+                      <p className="text-white/70 text-base sm:text-lg leading-relaxed">
+                        {item.description}
+                      </p>
+                      <Link
+                        to="/menu"
+                        className="inline-flex items-center gap-2 text-white hover:text-white/80 transition-colors text-lg font-medium"
+                      >
+                        <span>View full menu</span>
+                        <ChevronRight size={20} />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </Slider>
           </div>
         </div>
       </motion.section>
@@ -412,3 +409,69 @@ export function Home() {
     </div>
   );
 }
+
+    //  <motion.section 
+    //     initial={{ opacity: 0 }}
+    //     whileInView={{ opacity: 1 }}
+    //     transition={{ duration: 0.6 }}
+    //     viewport={{ once: true }}
+    //     className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-black"
+    //   >
+    //     <div className="max-w-7xl mx-auto">
+    //       <motion.h2 
+    //         initial={{ opacity: 0, y: 20 }}
+    //         whileInView={{ opacity: 1, y: 0 }}
+    //         transition={{ duration: 0.5 }}
+    //         viewport={{ once: true }}
+    //         className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-12 sm:mb-16"
+    //       >
+    //         Menu
+    //       </motion.h2>
+          
+    //       <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+    //         {/* Carousel */}
+    //         <motion.div 
+    //           initial={{ opacity: 0, x: -30 }}
+    //           whileInView={{ opacity: 1, x: 0 }}
+    //           transition={{ duration: 0.6 }}
+    //           viewport={{ once: true }}
+    //           className="rounded-2xl overflow-hidden"
+    //         >
+    //           <Slider {...sliderSettings}>
+    //             {menuItems.map((item, index) => (
+    //               <div key={index} className="relative h-[400px] sm:h-[500px]">
+    //                 <ImageWithFallback
+    //                   src={item.image}
+    //                   alt={t(item.name)}
+    //                   className="w-full h-full object-cover"
+    //                 />
+    //               </div>
+    //             ))}
+    //           </Slider>
+    //         </motion.div>
+
+    //         {/* Content Card */}
+    //         <motion.div 
+    //           key={currentSlide}
+    //           initial={{ opacity: 0, x: 30 }}
+    //           animate={{ opacity: 1, x: 0 }}
+    //           transition={{ duration: 0.5 }}
+    //           className="space-y-6"
+    //         >
+    //           <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
+    //             Chicken
+    //           </h3>
+    //           <p className="text-white/70 text-base sm:text-lg leading-relaxed">
+    //             {t(menuItems[currentSlide].description)}
+    //           </p>
+    //           <Link
+    //             to="/menu"
+    //             className="inline-flex items-center gap-2 text-white hover:text-white/80 transition-colors text-lg"
+    //           >
+    //             <span>Go to menu</span>
+    //             <ChevronRight size={24} />
+    //           </Link>
+    //         </motion.div>
+    //       </div>
+    //     </div>
+    //   </motion.section>

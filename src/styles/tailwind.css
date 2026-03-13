@@ -22,3 +22,30 @@
   opacity: 1 !important;
   color: white !important;
 }
+
+
+/* Position the dots container 
+.custom-dots-left {
+  position: absolute !important;
+  bottom: 20px !important;
+  left: 25% !important; 
+  width: auto !important;
+  text-align: left !important;
+  z-index: 20;
+}
+
+.custom-dots-left li {
+  margin: 0 4px !important;
+}
+
+.custom-dots-left li button:before {
+  color: white !important; 
+  font-size: 12px !important;
+  opacity: 0.5;
+}
+
+.custom-dots-left li.slick-active button:before {
+  color: white !important;
+  opacity: 1;
+}
+*/
