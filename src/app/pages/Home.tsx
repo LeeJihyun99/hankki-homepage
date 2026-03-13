@@ -10,6 +10,7 @@ import { useState } from "react";
 import menuIMG1 from "../../assets/home_menu_section_items/home_menu_chickenwithbeer.png";
 import menuIMG2 from "../../assets/home_menu_section_items/home_menu_budaejjigae_soju.png";
 import menuIMG3 from "../../assets/home_menu_section_items/home_menu_pancakewithmakgeoli.png";
+import woltLogo from "../../assets/wolt_logo.png";
 
 const menuItems = [
   {
@@ -192,7 +193,7 @@ export function Home() {
             viewport={{ once: true }}
             className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-12 sm:mb-16"
           >
-            Menu Highlights
+            Menu
           </motion.h2>
           
           <div className="relative"> {/* Container for outside arrows */}
@@ -322,6 +323,7 @@ export function Home() {
         className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-black"
       >
         <div className="max-w-7xl mx-auto">
+          {/* Contact Title */}
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -332,65 +334,149 @@ export function Home() {
             Contact
           </motion.h2>
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-            <motion.div 
+            {/* Contact Information */}
+            <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="space-y-6"
             >
-              <div className="flex items-start gap-3">
-                <MapPin className="flex-shrink-0 mt-1" size={20} />
-                <p className="text-white/80">Brabanter Str. 42, 50672, Köln</p>
+              <div className="space-y-6 mb-8">
+                {/* Address */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  viewport={{ once: true }}
+                  className="flex items-start gap-4"
+                >
+                  <div className="bg-white/10 p-3 rounded-2xl">
+                    <MapPin size={24} />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-1">{t("contact.address")}</h3>
+                    <p className="text-white/70">Brabanter Str. 42, 50672, Köln</p>
+                  </div>
+                </motion.div>
+                {/* Email */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  viewport={{ once: true }}
+                  className="flex items-start gap-4"
+                >
+                  <div className="bg-white/10 p-3 rounded-2xl">
+                    <Mail size={24} />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-1">{t("contact.email")}</h3>
+                    <a
+                      href="mailto:info@hankki.de"
+                      className="text-white/70 hover:text-white"
+                    >
+                       info@hankki.de
+                    </a>
+                  </div>
+                </motion.div>
+                {/* Phone */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  viewport={{ once: true }}
+                  className="flex items-start gap-4"
+                >
+                  <div className="bg-white/10 p-3 rounded-2xl">
+                    <Phone size={24} />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-1">{t("contact.phone")}</h3>
+                    <a
+                      href="tel:+4922167811694"
+                      className="text-white/70 hover:text-white"
+                    >
+                      +49 (0)221 6781 1694
+                    </a>
+                  </div>
+                </motion.div>
               </div>
-              <div className="flex items-center gap-3">
-                <Mail className="flex-shrink-0" size={20} />
-                <a href="mailto:hankki.koeln@gmail.com" className="text-white/80 hover:text-white">
-                  hankki.koeln@gmail.com
-                </a>
-              </div>
-              <div className="flex items-center gap-3">
-                <Phone className="flex-shrink-0" size={20} />
-                <a href="tel:+4922167811694" className="text-white/80 hover:text-white">
-                  +49 (0)221 6781 1694
-                </a>
-              </div>
-              <div className="flex gap-4 pt-4">
-                <a
-                  href="https://maps.google.com"
+              {/* Social Media */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                viewport={{ once: true }}
+                className="mt-12"
+              >
+                <h3 className="font-semibold mb-4">{t("contact.followUs")}</h3>
+                <div className="flex gap-4">
+                  <motion.a
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    href="https://maps.app.goo.gl/dormANvFEaFrd4PF9"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-white/10 p-3 rounded-2xl hover:bg-white/20 transition-colors"
+                    aria-label="Google Maps"
+                  >
+                    <Map size={24} />
+                  </motion.a>
+                  <motion.a
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    href="https://www.instagram.com/hankki.koeln/?hl=en"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-white/10 p-3 rounded-2xl hover:bg-white/20 transition-colors"
+                    aria-label="Instagram"
+                  >
+                    <Instagram size={24} />
+                  </motion.a>
+                  <motion.a
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    href="https://www.facebook.com/Hankki.Koeln/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-white/10 p-3 rounded-2xl hover:bg-white/20 transition-colors"
+                    aria-label="Facebook"
+                  >
+                    <Facebook size={24} />
+                  </motion.a>
+                </div>
+              </motion.div>
+              {/* Wolt Link */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.5 }} // social media보다 약간 늦게 나오도록 delay 조정
+                viewport={{ once: true }}
+                className="mt-8" // social media 세션과의 간격 조정
+              >
+                {/* <h3 className="font-semibold mb-4">{t("contact.orderOnWolt")}</h3> 번역 키 추가 필요 */}
+                <motion.a
+                  whileHover={{ scale: 1.05 }} // 호버 시 살짝 커지는 효과
+                  whileTap={{ scale: 0.95 }}
+                  href="https://wolt.com/ko/deu/cologne/restaurant/hankki" // Hankki Wolt 상점 주소로 수정해주세요
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white/60 hover:text-white transition-colors"
-                  aria-label="Google Maps"
+                  className="inline-block"
+                  aria-label="Order on Wolt"
                 >
-                  <Map size={24} />
-                </a>
-                <a
-                  href="https://instagram.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white/60 hover:text-white transition-colors"
-                  aria-label="Instagram"
-                >
-                  <Instagram size={24} />
-                </a>
-                <a
-                  href="https://facebook.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white/60 hover:text-white transition-colors"
-                  aria-label="Facebook"
-                >
-                  <Facebook size={24} />
-                </a>
-              </div>
+                  <img src={woltLogo} alt="Wolt" className="h-14 w-auto" /> {/* 로고 높이 조정 */}
+                </motion.a>
+              </motion.div>
+              {/* Reservation Link */}
               <Link
                 to="/contact"
                 className="inline-block border border-white px-8 py-3 text-sm rounded-full hover:bg-white hover:text-black transition-all duration-300 mt-8"
               >
                 Make a reservation
               </Link>
+            
             </motion.div>
+            {/* Map */}
             <motion.div 
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -409,69 +495,3 @@ export function Home() {
     </div>
   );
 }
-
-    //  <motion.section 
-    //     initial={{ opacity: 0 }}
-    //     whileInView={{ opacity: 1 }}
-    //     transition={{ duration: 0.6 }}
-    //     viewport={{ once: true }}
-    //     className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-black"
-    //   >
-    //     <div className="max-w-7xl mx-auto">
-    //       <motion.h2 
-    //         initial={{ opacity: 0, y: 20 }}
-    //         whileInView={{ opacity: 1, y: 0 }}
-    //         transition={{ duration: 0.5 }}
-    //         viewport={{ once: true }}
-    //         className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-12 sm:mb-16"
-    //       >
-    //         Menu
-    //       </motion.h2>
-          
-    //       <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-    //         {/* Carousel */}
-    //         <motion.div 
-    //           initial={{ opacity: 0, x: -30 }}
-    //           whileInView={{ opacity: 1, x: 0 }}
-    //           transition={{ duration: 0.6 }}
-    //           viewport={{ once: true }}
-    //           className="rounded-2xl overflow-hidden"
-    //         >
-    //           <Slider {...sliderSettings}>
-    //             {menuItems.map((item, index) => (
-    //               <div key={index} className="relative h-[400px] sm:h-[500px]">
-    //                 <ImageWithFallback
-    //                   src={item.image}
-    //                   alt={t(item.name)}
-    //                   className="w-full h-full object-cover"
-    //                 />
-    //               </div>
-    //             ))}
-    //           </Slider>
-    //         </motion.div>
-
-    //         {/* Content Card */}
-    //         <motion.div 
-    //           key={currentSlide}
-    //           initial={{ opacity: 0, x: 30 }}
-    //           animate={{ opacity: 1, x: 0 }}
-    //           transition={{ duration: 0.5 }}
-    //           className="space-y-6"
-    //         >
-    //           <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
-    //             Chicken
-    //           </h3>
-    //           <p className="text-white/70 text-base sm:text-lg leading-relaxed">
-    //             {t(menuItems[currentSlide].description)}
-    //           </p>
-    //           <Link
-    //             to="/menu"
-    //             className="inline-flex items-center gap-2 text-white hover:text-white/80 transition-colors text-lg"
-    //           >
-    //             <span>Go to menu</span>
-    //             <ChevronRight size={24} />
-    //           </Link>
-    //         </motion.div>
-    //       </div>
-    //     </div>
-    //   </motion.section>

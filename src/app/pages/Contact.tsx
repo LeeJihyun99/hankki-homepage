@@ -3,6 +3,7 @@ import { MapPin, Mail, Phone, Facebook, Instagram, Map } from "lucide-react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { useLanguage } from "../context/LanguageContext";
 import { motion } from "motion/react";
+import woltLogo from "../../assets/wolt_logo.png";
 
 export function Contact() {
   const { t } = useLanguage();
@@ -74,8 +75,9 @@ export function Contact() {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl sm:text-4xl font-bold mb-8">{t("contact.getInTouch")}</h2>
+              <h2 className="text-3xl sm:text-4xl font-bold mb-8">{t("Contact")}</h2>
               <div className="space-y-6 mb-8">
+                {/* Address */}
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -91,6 +93,7 @@ export function Contact() {
                     <p className="text-white/70">Brabanter Str. 42, 50672, Köln</p>
                   </div>
                 </motion.div>
+                {/* Email */}
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -104,13 +107,14 @@ export function Contact() {
                   <div>
                     <h3 className="font-semibold mb-1">{t("contact.email")}</h3>
                     <a
-                      href="mailto:hankki.koeln@gmail.com"
+                      href="mailto:info@hankki.de"
                       className="text-white/70 hover:text-white"
                     >
-                      hankki.koeln@gmail.com
+                      info@hankki.de
                     </a>
                   </div>
                 </motion.div>
+                {/* Phone */}
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -132,7 +136,6 @@ export function Contact() {
                   </div>
                 </motion.div>
               </div>
-
               {/* Social Media */}
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
@@ -146,7 +149,7 @@ export function Contact() {
                   <motion.a
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                    href="https://maps.google.com"
+                    href="https://maps.app.goo.gl/dormANvFEaFrd4PF9"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="bg-white/10 p-3 rounded-2xl hover:bg-white/20 transition-colors"
@@ -157,7 +160,7 @@ export function Contact() {
                   <motion.a
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                    href="https://instagram.com"
+                    href="https://www.instagram.com/hankki.koeln/?hl=en"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="bg-white/10 p-3 rounded-2xl hover:bg-white/20 transition-colors"
@@ -168,7 +171,7 @@ export function Contact() {
                   <motion.a
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                    href="https://facebook.com"
+                    href="https://www.facebook.com/Hankki.Koeln/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="bg-white/10 p-3 rounded-2xl hover:bg-white/20 transition-colors"
@@ -178,6 +181,29 @@ export function Contact() {
                   </motion.a>
                 </div>
               </motion.div>
+
+              {/* Wolt Link */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.5 }} // social media보다 약간 늦게 나오도록 delay 조정
+                viewport={{ once: true }}
+                className="mt-8" // social media 세션과의 간격 조정
+              >
+                {/* <h3 className="font-semibold mb-4">{t("contact.orderOnWolt")}</h3> 번역 키 추가 필요 */}
+                <motion.a
+                  whileHover={{ scale: 1.05 }} // 호버 시 살짝 커지는 효과
+                  whileTap={{ scale: 0.95 }}
+                  href="https://wolt.com/ko/deu/cologne/restaurant/hankki" // Hankki Wolt 상점 주소로 수정해주세요
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block"
+                  aria-label="Order on Wolt"
+                >
+                  <img src={woltLogo} alt="Wolt" className="h-14 w-auto" /> {/* 로고 높이 조정 */}
+                </motion.a>
+              </motion.div>
+
             </motion.div>
 
             {/* Reservation Form */}
