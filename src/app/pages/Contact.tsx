@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { MapPin, Mail, Phone, Facebook, Instagram, Map } from "lucide-react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { useLanguage } from "../context/LanguageContext";
-import { motion } from "motion/react";
+import { motion } from "framer-motion"; // motion/react 대신 framer-motion 권장 (환경에 따라 조정)
 import woltLogo from "../../assets/wolt_logo.png";
+import Swal from 'sweetalert2';
+
 
 export function Contact() {
   const { t } = useLanguage();
@@ -14,14 +16,79 @@ export function Contact() {
     guests: "",
     date: "",
     time: "",
+    note: "", // Note 필드 추가
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle form submission
-    console.log("Reservation submitted:", formData);
-    alert("Thank you for your reservation! We will contact you shortly.");
-    // Reset form
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // 날짜 제한: 오늘 이전 및 오늘 날짜 선택 방지 (내일부터 가능)
+  const minDate = useMemo(() => {
+    const today = new Date();
+    today.setDate(today.getDate() + 1);
+    return today.toISOString().split("T")[0];
+  }, []);
+
+  // 영업시간 데이터에 따른 타임 슬롯 생성 로직
+  const getTimeSlots = () => {
+    if (!formData.date) return [];
+    
+    const selectedDate = new Date(formData.date);
+    const day = selectedDate.getDay(); // 0: 일, 1: 월, 2: 화...
+
+    if (day === 1) return []; // 월요일 휴무
+
+    const slots = [];
+    // 화-토: 5:00 PM 시작 / 일: 12:00 PM 시작
+    let startHour = (day >= 2 && day <= 5) ? 17 : 12;
+    // 주방 마감 시간 기준 (화-토 10:30 PM, 일 10:00 PM)
+    let endHour = (day === 0) ? 22 : 22.5; 
+
+    for (let h = startHour; h <= Math.floor(endHour); h++) {
+      for (let m of ["00", "30"]) {
+        if (h === 22 && m === "30" && day === 0) break; // 일요일 10:30 제외
+        const timeValue = `${h}:${m}`;
+        const displayTime = h >= 12 
+          ? `${h === 12 ? 12 : h - 12}:${m} PM` 
+          : `${h}:${m} AM`;
+        slots.push({ value: timeValue, label: displayTime });
+      }
+    }
+    return slots;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setIsSubmitting(true); // 로딩 시작
+
+  // 구글 시트 배포 후 받은 웹 앱 URL을 여기에 넣으세요
+  const GOOGLE_SHEET_URL = import.meta.env.VITE_GOOGLE_SCRIPT_WEB_APP_URL;
+  console.log("google sheet url", GOOGLE_SHEET_URL);
+
+  try {
+    // 1. 구글 시트로 데이터 전송
+    await fetch(GOOGLE_SHEET_URL, {
+      method: "POST",
+      mode: "no-cors", // 구글 스크립트 특성상 no-cors가 안정적입니다
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    // 2. 성공 알림창 (SweetAlert2)
+    Swal.fire({
+      text: t("contact.submitAlert"),
+      icon: 'success',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#000000',
+      background: '#1a1a1a',
+      color: '#ffffff',
+      customClass: {
+        popup: 'rounded-3xl' // 모서리를 둥글게 하고 싶을 경우
+      }
+    });
+
+    // 3. 전송 성공 시 폼 초기화
     setFormData({
       name: "",
       email: "",
@@ -29,11 +96,53 @@ export function Contact() {
       guests: "",
       date: "",
       time: "",
+      note: "",
     });
-  };
+
+  } catch (error) {
+    console.error("Submission error:", error);
+    // 에러 발생 시 알림
+    Swal.fire({
+      title: 'Error',
+      text: 'Something went wrong. Please try again or call us.',
+      icon: 'error',
+      confirmButtonColor: '#000000',
+      background: '#1a1a1a',
+      color: '#ffffff',
+    });
+  } finally {
+    setIsSubmitting(false); // 로딩 종료
+  }
+};
+
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   console.log("Reservation submitted:", formData);
+    
+  //   // 요청하신 영어 성공 메시지
+  //   Swal.fire({
+  //   text: t("contact.submitAlert"),
+  //   icon: 'success',
+  //   confirmButtonText: 'OK',
+  //   confirmButtonColor: '#000000', // 버튼 색상을 브랜드 컬러인 블랙으로 변경
+  //   background: '#1a1a1a', // 다크 모드 배경
+  //   color: '#ffffff'
+  // });
+    
+  //   // 폼 초기화
+  //   setFormData({
+  //     name: "",
+  //     email: "",
+  //     phone: "",
+  //     guests: "",
+  //     date: "",
+  //     time: "",
+  //     note: "",
+  //   });
+  // };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     setFormData({
       ...formData,
@@ -65,7 +174,7 @@ export function Contact() {
       </section>
 
       {/* Contact & Reservation Section */}
-      <section className="py-16 sm:py-20 lg:py-24 px-8 sm:px- lg:px-8 bg-black">
+      <section className="py-16 sm:py-20 lg:py-24 px-8 bg-black">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
             {/* Contact Information */}
@@ -77,133 +186,46 @@ export function Contact() {
             >
               <h2 className="text-3xl sm:text-4xl font-bold mb-8">{t("Contact")}</h2>
               <div className="space-y-6 mb-8">
-                {/* Address */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                  viewport={{ once: true }}
-                  className="flex items-start gap-4"
-                >
-                  <div className="bg-white/10 p-3 rounded-2xl">
-                    <MapPin size={24} />
-                  </div>
+                <div className="flex items-start gap-4">
+                  <div className="bg-white/10 p-3 rounded-2xl"><MapPin size={24} /></div>
                   <div>
                     <h3 className="font-semibold mb-1">{t("contact.address")}</h3>
                     <p className="text-white/70">Brabanter Str. 42, 50672, Köln</p>
                   </div>
-                </motion.div>
-                {/* Email */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  viewport={{ once: true }}
-                  className="flex items-start gap-4"
-                >
-                  <div className="bg-white/10 p-3 rounded-2xl">
-                    <Mail size={24} />
-                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="bg-white/10 p-3 rounded-2xl"><Mail size={24} /></div>
                   <div>
                     <h3 className="font-semibold mb-1">{t("contact.email")}</h3>
-                    <a
-                      href="mailto:info@hankki.de"
-                      className="text-white/70 hover:text-white"
-                    >
-                      info@hankki.de
-                    </a>
+                    <a href="mailto:info@hankki.de" className="text-white/70 hover:text-white">info@hankki.de</a>
                   </div>
-                </motion.div>
-                {/* Phone */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                  viewport={{ once: true }}
-                  className="flex items-start gap-4"
-                >
-                  <div className="bg-white/10 p-3 rounded-2xl">
-                    <Phone size={24} />
-                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="bg-white/10 p-3 rounded-2xl"><Phone size={24} /></div>
                   <div>
                     <h3 className="font-semibold mb-1">{t("contact.phone")}</h3>
-                    <a
-                      href="tel:+4922167811694"
-                      className="text-white/70 hover:text-white"
-                    >
-                      +49 (0)221 6781 1694
-                    </a>
+                    <a href="tel:+4922167811694" className="text-white/70 hover:text-white">+49 (0)221 6781 1694</a>
                   </div>
-                </motion.div>
-              </div>
-              {/* Social Media */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                viewport={{ once: true }}
-                className="mt-12"
-              >
-                <h3 className="font-semibold mb-4">{t("contact.followUs")}</h3>
-                <div className="flex gap-4">
-                  <motion.a
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    href="https://maps.app.goo.gl/dormANvFEaFrd4PF9"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-white/10 p-3 rounded-2xl hover:bg-white/20 transition-colors"
-                    aria-label="Google Maps"
-                  >
-                    <Map size={24} />
-                  </motion.a>
-                  <motion.a
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    href="https://www.instagram.com/hankki.koeln/?hl=en"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-white/10 p-3 rounded-2xl hover:bg-white/20 transition-colors"
-                    aria-label="Instagram"
-                  >
-                    <Instagram size={24} />
-                  </motion.a>
-                  <motion.a
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    href="https://www.facebook.com/Hankki.Koeln/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-white/10 p-3 rounded-2xl hover:bg-white/20 transition-colors"
-                    aria-label="Facebook"
-                  >
-                    <Facebook size={24} />
-                  </motion.a>
                 </div>
-              </motion.div>
+              </div>
 
-              {/* Wolt Link */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.5 }} // social media보다 약간 늦게 나오도록 delay 조정
-                viewport={{ once: true }}
-                className="mt-8" // social media 세션과의 간격 조정
-              >
-                {/* <h3 className="font-semibold mb-4">{t("contact.orderOnWolt")}</h3> 번역 키 추가 필요 */}
-                <motion.a
-                  whileHover={{ scale: 1.05 }} // 호버 시 살짝 커지는 효과
-                  whileTap={{ scale: 0.95 }}
-                  href="https://wolt.com/ko/deu/cologne/restaurant/hankki" // Hankki Wolt 상점 주소로 수정해주세요
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block"
-                  aria-label="Order on Wolt"
-                >
-                  <img src={woltLogo} alt="Wolt" className="h-14 w-auto" /> {/* 로고 높이 조정 */}
-                </motion.a>
+              {/* Social Media & Wolt */}
+              <div className="flex gap-4 mt-12">
+                {[
+                  { icon: <Map size={24} />, href: "https://maps.app.goo.gl/dormANvFEaFrd4PF9" },
+                  { icon: <Instagram size={24} />, href: "https://www.instagram.com/hankki.koeln/?hl=en" },
+                  { icon: <Facebook size={24} />, href: "https://www.facebook.com/Hankki.Koeln/" }
+                ].map((social, i) => (
+                  <motion.a key={i} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} href={social.href} target="_blank" className="bg-white/10 p-3 rounded-2xl hover:bg-white/20 transition-colors">
+                    {social.icon}
+                  </motion.a>
+                ))}
+              </div>
+              <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="mt-8">
+                <a href="https://wolt.com/ko/deu/cologne/restaurant/hankki" target="_blank" rel="noopener noreferrer">
+                  <img src={woltLogo} alt="Wolt" className="h-14 w-auto" />
+                </a>
               </motion.div>
-
             </motion.div>
 
             {/* Reservation Form */}
@@ -213,290 +235,121 @@ export function Contact() {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl sm:text-4xl font-bold mb-8">
-                {t("contact.reservation")}
-              </h2>
+              <h2 className="text-3xl sm:text-4xl font-bold mb-8">{t("contact.reservation")}</h2>
               <form onSubmit={handleSubmit} className="space-y-6">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium mb-2"
-                  >
-                    {t("contact.name")} *
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-white/40 transition-colors"
-                    placeholder={t("contact.namePlaceholder")}
-                  />
-                </motion.div>
+                {/* Name */}
+                <div>
+                  <label className="block text-sm font-medium mb-2">{t("contact.name")} *</label>
+                  <input type="text" name="name" value={formData.name} onChange={handleChange} required className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white focus:outline-none focus:border-white/40" placeholder={t("contact.namePlaceholder")} />
+                </div>
 
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  viewport={{ once: true }}
-                >
-                  <label
-                    htmlFor="phone"
-                    className="block text-sm font-medium mb-2"
-                  >
-                    {t("contact.phoneNumber")} *
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-white/40 transition-colors"
-                    placeholder={t("contact.phonePlaceholder")}
-                  />
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                  viewport={{ once: true }}
-                >
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium mb-2"
-                  >
-                    {t("contact.emailAddress")} *
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-white/40 transition-colors"
-                    placeholder={t("contact.emailPlaceholder")}
-                  />
-                </motion.div>
-
+                {/* Phone & Email */}
                 <div className="grid sm:grid-cols-2 gap-6">
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.4 }}
-                    viewport={{ once: true }}
-                  >
-                    <label
-                      htmlFor="guests"
-                      className="block text-sm font-medium mb-2"
-                    >
-                      {t("contact.numberOfGuests")} *
-                    </label>
-                    <select
-                      id="guests"
-                      name="guests"
-                      value={formData.guests}
-                      onChange={handleChange}
-                      required
-                      className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white focus:outline-none focus:border-white/40 transition-colors [&>option]:bg-black [&>option]:text-white"
-                    >
-                      <option value="" disabled>
-                        {t("contact.selectGuests")}
-                      </option>
-                      {[1, 2, 3, 4, 5, 6].map((num) => (
-                        <option key={num} value={num}>
-                          {num} {num === 1 ? t("contact.guest") : t("contact.guestsPlural")}
-                        </option>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">{t("contact.phoneNumber")} *</label>
+                    <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white focus:outline-none focus:border-white/40" placeholder={t("contact.phonePlaceholder")} />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">{t("contact.emailAddress")} *</label>
+                    <input type="email" name="email" value={formData.email} onChange={handleChange} required className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white focus:outline-none focus:border-white/40" placeholder={t("contact.emailPlaceholder")} />
+                  </div>
+                </div>
+
+                {/* Guests & Date */}
+                <div className="grid sm:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">{t("contact.numberOfGuests")} *</label>
+                    <select name="guests" value={formData.guests} onChange={handleChange} required className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white focus:outline-none [&>option]:bg-black">
+                      <option value="" disabled>{t("contact.selectGuests")}</option>
+                      {[1, 2, 3, 4, 5, 6].map(num => (
+                        <option key={num} value={num}>{num} {num === 1 ? t("contact.guest") : t("contact.guestsPlural")}</option>
                       ))}
                       <option value="7+">7+ {t("contact.guestsPlural")}</option>
                     </select>
-                  </motion.div>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.5 }}
-                    viewport={{ once: true }}
-                  >
-                    <label
-                      htmlFor="date"
-                      className="block text-sm font-medium mb-2"
-                    >
-                      {t("contact.date")} *
-                    </label>
-                    <input
-                      type="date"
-                      id="date"
-                      name="date"
-                      value={formData.date}
-                      onChange={handleChange}
-                      required
-                      className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white focus:outline-none focus:border-white/40 transition-colors [&::-webkit-calendar-picker-indicator]:invert"
-                    />
-                  </motion.div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">{t("contact.date")} *</label>
+                    <input type="date" name="date" min={minDate} value={formData.date} onChange={handleChange} required className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white focus:outline-none [&::-webkit-calendar-picker-indicator]:invert" />
+                  </div>
                 </div>
 
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.6 }}
-                  viewport={{ once: true }}
-                >
-                  <label
-                    htmlFor="time"
-                    className="block text-sm font-medium mb-2"
-                  >
-                    {t("contact.time")} *
-                  </label>
-                  <select
-                    id="time"
-                    name="time"
-                    value={formData.time}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white focus:outline-none focus:border-white/40 transition-colors [&>option]:bg-black [&>option]:text-white"
-                  >
-                    <option value="" disabled>
-                      {t("contact.selectTime")}
-                    </option>
-                    <option value="17:00">5:00 PM</option>
-                    <option value="17:30">5:30 PM</option>
-                    <option value="18:00">6:00 PM</option>
-                    <option value="18:30">6:30 PM</option>
-                    <option value="19:00">7:00 PM</option>
-                    <option value="19:30">7:30 PM</option>
-                    <option value="20:00">8:00 PM</option>
-                    <option value="20:30">8:30 PM</option>
-                    <option value="21:00">9:00 PM</option>
-                    <option value="21:30">9:30 PM</option>
-                    <option value="22:00">10:00 PM</option>
-                    <option value="22:30">10:30 PM</option>
-                    <option value="23:00">11:00 PM</option>
-                    <option value="23:30">11:30 PM</option>
+                {/* Time */}
+                <div>
+                  <label className="block text-sm font-medium mb-2">{t("contact.time")} *</label>
+                  <select name="time" value={formData.time} onChange={handleChange} required disabled={!formData.date} className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white focus:outline-none [&>option]:bg-black">
+                    <option value="" disabled>{!formData.date ? "Select date first" : t("contact.selectTime")}</option>
+                    {getTimeSlots().map(slot => (
+                      <option key={slot.value} value={slot.value}>{slot.label}</option>
+                    ))}
                   </select>
-                </motion.div>
+                  {formData.date && getTimeSlots().length === 0 && (
+                    <p className="text-red-400 text-xs mt-2 font-medium">{t("contact.mondayClosed")}</p>
+                  )}
+                </div>
 
-                <motion.button
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.7 }}
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  type="submit"
-                  className="w-full bg-white text-black font-semibold py-4 rounded-full hover:bg-white/90 transition-colors"
-                >
+                {/* Note Field (New) */}
+                <div>
+                  <label className="block text-sm font-medium mb-2">Special Notes</label>
+                  <textarea name="note" value={formData.note} onChange={handleChange} rows={3} className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white focus:outline-none focus:border-white/40 resize-none" placeholder="Allergies, special occasions, etc." />
+                </div>
+
+                <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} type="submit" className="w-full bg-white text-black font-bold py-4 rounded-full transition-colors">
                   {t("contact.submit")}
                 </motion.button>
 
-                <motion.p 
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.8 }}
-                  viewport={{ once: true }}
-                  className="text-sm text-white/60 text-center"
-                >
-                  {t("contact.required")}
-                </motion.p>
+                {/* Warning Message */}
+                <div className="text-center space-y-2">
+                  <p className="text-red-500 font-bold text-sm">
+                    {t("contact.alert")}
+                  </p>
+                  <p className="text-xs text-white/60">{t("contact.required")}</p>
+                </div>
               </form>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Opening Hours Section */}
-      <motion.section 
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-        className="relative py-16 sm:py-20 border-t border-white/10 px-4 sm:px-6 lg:px-8 overflow-hidden"
-      >
-        {/* Background Image with Low Opacity */}
+      {/* Opening Hours Section (Same as before) */}
+      <motion.section initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="relative py-20 border-t border-white/10 px-8 overflow-hidden">
         <div className="absolute inset-0">
-          <ImageWithFallback
-            src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxyZXN0YXVyYW50JTIwZGFyayUyMG1vb2R5fGVufDF8fHx8MTczNDQxMjU2N3ww&ixlib=rb-4.1.0&q=80&w=1080"
-            alt="Restaurant ambiance"
-            className="w-full h-full object-cover"
-          />
+          <ImageWithFallback src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1080" alt="Restaurant ambiance" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black/85"></div>
         </div>
-        
         <div className="relative max-w-4xl mx-auto">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="text-3xl sm:text-4xl font-bold text-center mb-12"
-          >
-            {t("home.openingHours")}
-          </motion.h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12">{t("home.openingHours")}</h2>
           <div className="space-y-6 max-w-2xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="flex justify-between items-center border-b border-white/20 pb-4"
-            >
+            <div className="flex justify-between border-b border-white/20 pb-4">
               <span className="text-lg font-medium">{t("days.monday")}</span>
               <span className="text-white/70">{t("home.closed")}</span>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="flex justify-between items-center border-b border-white/20 pb-4"
-            >
+            </div>
+            <div className="flex justify-between border-b border-white/20 pb-4">
               <span className="text-lg font-medium">{t("days.tuesday")} - {t("days.friday")}</span>
               <div className="text-right">
-                <p className="text-white/90">5:00 PM - 12:00 AM</p>
+                <p>5:00 PM - 12:00 AM</p>
                 <p className="text-sm text-white/60">({t("home.kitchenUntil")} 10:30 PM)</p>
               </div>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              viewport={{ once: true }}
-              className="flex justify-between items-center border-b border-white/20 pb-4"
-            >
+            </div>
+            <div className="flex justify-between border-b border-white/20 pb-4">
               <span className="text-lg font-medium">{t("days.saturday")}</span>
               <div className="text-right">
-                <p className="text-white/90">12:00 PM - 12:00 AM</p>
+                <p>12:00 PM - 12:00 AM</p>
                 <p className="text-sm text-white/60">({t("home.kitchenUntil")} 10:30 PM)</p>
               </div>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              viewport={{ once: true }}
-              className="flex justify-between items-center border-b border-white/20 pb-4"
-            >
+            </div>
+            <div className="flex justify-between border-b border-white/20 pb-4">
               <span className="text-lg font-medium">{t("days.sunday")}</span>
               <div className="text-right">
-                <p className="text-white/90">12:00 PM - 12:00 AM</p>
+                <p>12:00 PM - 12:00 AM</p>
                 <p className="text-sm text-white/60">({t("home.kitchenUntil")} 10:00 PM)</p>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </motion.section>
     </div>
   );
 }
+
 
 
