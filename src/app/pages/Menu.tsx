@@ -4,6 +4,7 @@ import { Download, Flame, Wheat, Milk, Fish, Egg, Nut, Leaf, UtensilsCrossed, Sl
 import { useLanguage } from "../context/LanguageContext";
 import { motion, AnimatePresence } from "motion/react";
 import halalIcon from "../../assets/halal.png";
+import menu from "../../assets/menu.pdf";
 
 const categories = ["all", "friedChicken", "soups", "snacksSides", "drinks"];
 
@@ -460,9 +461,17 @@ export function Menu() {
     setShowFilters(false);
   };
 
+  // const handleDownloadMenu = () => {
+  //   alert(t("menu.downloadPDFAlert") || "Menu PDF download would start here. In production, this would download the actual menu PDF.");
+  // };
+
   const handleDownloadMenu = () => {
-    alert(t("menu.downloadPDFAlert") || "Menu PDF download would start here. In production, this would download the actual menu PDF.");
-  };
+  // 직접 파일을 링크로 여는 방식
+  const link = document.createElement('a');
+  link.href = menu; // public 폴더 기준 경로
+  link.download = 'Hankki_Menu.pdf'; // 다운로드될 파일명 설정
+  link.click();
+};
 
   // Filter items based on selection
   const filteredItems = menuItems.filter((item) => {
@@ -500,7 +509,7 @@ export function Menu() {
       <section className="relative h-[40vh] sm:h-[50vh] overflow-hidden flex items-center justify-center">
         <div className="absolute inset-0">
           <ImageWithFallback
-            src="https://images.unsplash.com/photo-1764358868789-400fb3d39fb7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmaW5lJTIwZGluaW5nJTIwZGFyayUyMGVsZWdhbnQlMjBhdG1vc3BoZXJlfGVufDF8fHx8MTc3MzMxNzIyMnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+            src="https://images.unsplash.com/photo-1764358868789-400fb3d39fb7?..."
             alt="Menu"
             className="w-full h-full object-cover"
           />
@@ -513,17 +522,19 @@ export function Menu() {
             >
               {t("menu.title")}
             </motion.h1>
+
             {/* Download Menu Button */}
-            <motion.button
+            <motion.a
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              onClick={handleDownloadMenu}
-              className="flex items-center gap-2 bg-white text-black text-sm px-4 sm:px-5 py-2 rounded-full font-medium hover:bg-white/90 transition-colors shadow-lg"
+              href={menu} // PDF 파일 경로
+              download="Hankki_Menu.pdf"   // 다운로드될 때의 이름
+              className="flex items-center gap-2 bg-white text-black text-sm px-4 sm:px-5 py-2 rounded-full font-medium hover:bg-white/90 transition-colors shadow-lg no-underline cursor-pointer"
             >
               <Download size={18} />
               <span>{t("menu.downloadPDF")}</span>
-            </motion.button>
+            </motion.a>
           </div>
         </div>
       </section>
