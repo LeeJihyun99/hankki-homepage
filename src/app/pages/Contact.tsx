@@ -184,7 +184,7 @@ export function Contact() {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl sm:text-4xl font-bold mb-8">{t("Contact")}</h2>
+              <h2 className="text-3xl sm:text-4xl font-bold mb-8">{t("contact.title")}</h2>
               <div className="space-y-6 mb-8">
                 <div className="flex items-start gap-4">
                   <div className="bg-white/10 p-3 rounded-2xl"><MapPin size={24} /></div>
