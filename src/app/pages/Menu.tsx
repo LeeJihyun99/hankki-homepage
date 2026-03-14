@@ -472,14 +472,15 @@ export function Menu() {
             >
               {t("menu.title")}
             </motion.h1>
+            {/* Download Menu Button */}
             <motion.button
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               onClick={handleDownloadMenu}
-              className="flex items-center gap-2 bg-white text-black px-6 sm:px-8 py-3 rounded-full font-medium hover:bg-white/90 transition-colors shadow-lg"
+              className="flex items-center gap-2 bg-white text-black text-sm px-4 sm:px-5 py-2 rounded-full font-medium hover:bg-white/90 transition-colors shadow-lg"
             >
-              <Download size={20} />
+              <Download size={18} />
               <span>{t("menu.downloadPDF")}</span>
             </motion.button>
           </div>

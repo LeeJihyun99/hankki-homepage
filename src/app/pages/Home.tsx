@@ -261,6 +261,7 @@ export function Home() {
             Opening Hours
           </motion.h2>
           <div className="space-y-6 max-w-2xl mx-auto">
+            {/* Monday */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -271,6 +272,7 @@ export function Home() {
               <span className="text-lg font-medium text-white">{t("days.monday")}</span>
               <span className="text-white/70">{t("home.closed")}</span>
             </motion.div>
+            {/* Tuesday - Friday */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -284,6 +286,7 @@ export function Home() {
                 <p className="text-sm text-white/60">(Kitchen until 10:30 PM)</p>
               </div>
             </motion.div>
+            {/* Saturday */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -297,6 +300,7 @@ export function Home() {
                 <p className="text-sm text-white/60">(Kitchen until 10:30 PM)</p>
               </div>
             </motion.div>
+            {/* Sunday */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
