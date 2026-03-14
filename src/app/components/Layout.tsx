@@ -74,7 +74,7 @@ export function Layout() {
         <div className="w-full px-8 sm:px-8 md:px-8 lg:px-8">
           <div className="flex justify-between items-center h-16 sm:h-20 max-w-none">
             {/* Logo */}
-            <Link to="/" className="flex items-center">
+            <Link to="/" onClick={() => window.scrollTo(0, 0)} className="flex items-center">
               <img src={logoIMG} alt="Hankki" className="h-10 sm:h-14" />
             </Link>
 
@@ -84,6 +84,7 @@ export function Layout() {
                 <Link
                   key={link.path}
                   to={link.path}
+                  onClick={() => window.scrollTo(0, 0)}
                   className={`text-sm tracking-wider transition-colors ${
                     isActive(link.path)
                       ? "text-white"
