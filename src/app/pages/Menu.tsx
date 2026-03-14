@@ -3,6 +3,7 @@ import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { Download, Flame, Wheat, Milk, Fish, Egg, Nut, Leaf, UtensilsCrossed, SlidersHorizontal, X, Drumstick, Heart, Split } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 import { motion, AnimatePresence } from "motion/react";
+import halalIcon from "../../assets/halal.png";
 
 const categories = ["all", "friedChicken", "soups", "snacksSides", "drinks"];
 
@@ -20,7 +21,8 @@ const menuItems = [
     price: "€12.90",
     spiciness: 0,
     allergens: ["wheat", "egg"],
-    isVegetarian: false
+    isVegetarian: false,
+    halal:true
   },
   {
     id: 2,
@@ -33,7 +35,8 @@ const menuItems = [
     price: "€13.90",
     spiciness: 2,
     allergens: ["wheat", "egg"],
-    isVegetarian: false
+    isVegetarian: false,
+    halal:true,
   },
   {
     id: 3,
@@ -46,7 +49,8 @@ const menuItems = [
     price: "€13.90",
     spiciness: 0,
     allergens: ["wheat", "egg"],
-    isVegetarian: false
+    isVegetarian: false,
+    halal:true
   },
   
   // Soups
@@ -274,44 +278,63 @@ function DetailModal({ item, onClose }: { item: typeof menuItems[0]; onClose: ()
                 className="w-full h-full object-cover"
               />
             </div>
-            <p className="text-gray-700 mb-4 leading-relaxed">{item.description}</p>
-            <p className="text-3xl font-bold mb-4">{item.price}</p>
             
-            {item.spiciness > 0 && (
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-sm text-gray-600">Spiciness:</span>
-                <div className="flex gap-1">
-                  {Array.from({ length: item.spiciness }).map((_, i) => (
-                    <Flame key={i} size={18} className="text-red-500" />
-                  ))}
-                </div>
-              </div>
-            )}
+            <p className="text-gray-700 mb-4 leading-relaxed">{item.description}</p>
+            <p className="text-3xl font-bold mb-6">{item.price}</p>
 
+            {/* Mobile Info Badges Row */}
+            <div className="flex flex-wrap items-center gap-2 mb-6">
+              {/* Halal Badge */}
+              {item.category === "friedChicken" && (
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-100 border border-gray-200">
+                  <img 
+                    src={halalIcon} 
+                    alt="Halal" 
+                    className="w-5 h-5 object-contain"
+                    onError={(e) => { e.currentTarget.style.display = 'none'; }} 
+                  />
+                  <span className="text-xs font-bold text-gray-700 uppercase">Halal</span>
+                </div>
+              )}
+
+              {/* Spiciness Badge */}
+              {item.spiciness > 0 && (
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-50 border border-red-100">
+                  <span className="text-xs font-bold text-red-600 uppercase">Spicy</span>
+                  <div className="flex gap-0.5">
+                    {Array.from({ length: item.spiciness }).map((_, i) => (
+                      <Flame key={i} size={14} className="text-red-500" fill="currentColor" />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Vegetarian Badge */}
+              {item.isVegetarian && (
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-50 border border-green-100">
+                  <Leaf size={14} className="text-green-600" />
+                  <span className="text-xs font-bold text-green-600 uppercase">Veg</span>
+                </div>
+              )}
+            </div>
+            
+            {/* Allergens Section */}
             {item.allergens.length > 0 && (
-              <div className="flex items-center gap-2 flex-wrap mb-3">
-                <span className="text-sm text-gray-600">Allergens:</span>
-                <div className="flex gap-2">
+              <div className="mt-4 pt-4 border-t border-gray-100">
+                <span className="text-sm text-gray-500 block mb-3">Allergens:</span>
+                <div className="flex flex-wrap gap-3">
                   {item.allergens.map((allergen) => {
                     const Icon = allergenIcons[allergen];
                     return Icon ? (
-                      <div
-                        key={allergen}
-                        className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center"
-                        title={allergen}
-                      >
-                        <Icon size={20} className="text-gray-700" />
+                      <div key={allergen} className="flex flex-col items-center gap-1">
+                        <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center border border-gray-100">
+                          <Icon size={20} className="text-gray-700" />
+                        </div>
+                        <span className="text-[10px] text-gray-500">{allergen}</span>
                       </div>
                     ) : null;
                   })}
                 </div>
-              </div>
-            )}
-
-            {item.isVegetarian && (
-              <div className="inline-flex items-center gap-1 px-3 py-2 rounded-full bg-green-100 border border-green-300">
-                <Leaf size={14} className="text-green-600" />
-                <span className="text-sm text-green-600 font-medium">Vegetarian</span>
               </div>
             )}
           </div>
@@ -344,51 +367,63 @@ function DetailModal({ item, onClose }: { item: typeof menuItems[0]; onClose: ()
                 <X size={24} className="text-gray-600" />
               </button>
             </div>
-            <div className="aspect-square overflow-hidden rounded-2xl mb-6">
+            <div className="aspect-square overflow-hidden rounded-2xl mb-6 shadow-sm">
               <ImageWithFallback
                 src={item.image}
                 alt={item.name}
                 className="w-full h-full object-cover"
               />
             </div>
-            <p className="text-gray-700 mb-6 leading-relaxed text-lg">{item.description}</p>
-            <p className="text-4xl font-bold mb-6">{item.price}</p>
-            
-            {item.spiciness > 0 && (
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-base text-gray-600 font-medium">Spiciness:</span>
-                <div className="flex gap-1">
-                  {Array.from({ length: item.spiciness }).map((_, i) => (
-                    <Flame key={i} size={20} className="text-red-500" />
-                  ))}
-                </div>
-              </div>
-            )}
 
+            <p className="text-gray-700 mb-6 leading-relaxed text-lg">{item.description}</p>
+            <p className="text-4xl font-bold mb-8">{item.price}</p>
+
+            {/* Desktop Info Tags */}
+            <div className="flex flex-wrap items-center gap-3 mb-8">
+              {item.category === "friedChicken" && (
+                <div className="flex items-center gap-2 px-4 py-2 rounded-xl">
+                  <img src={halalIcon} alt="Halal" className="w-14 h-14 object-contain" />
+                </div>
+              )}
+
+              {item.spiciness > 0 && (
+                <div className="flex items-center gap-3 px-4 py-2 rounded-xl">
+                  <div className="flex gap-1">
+                    {Array.from({ length: item.spiciness }).map((_, i) => (
+                      <Flame key={i} size={18} className="text-red-500" fill="currentColor" />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {item.isVegetarian && (
+                <div className="flex items-center gap-2 px-4 py-2 rounded-xl">
+                  <Leaf size={18} className="text-green-600" />
+                  <span className="text-sm font-bold text-green-600 uppercase tracking-wide">Vegetarian</span>
+                </div>
+              )}
+            </div>
+
+            {/* Allergens Section */}
             {item.allergens.length > 0 && (
-              <div className="flex items-center gap-3 flex-wrap mb-4">
-                <span className="text-base text-gray-600 font-medium">Allergens:</span>
-                <div className="flex gap-2">
+              <div className="mt-8 pt-6 border-t border-gray-100">
+                <span className="text-base text-gray-600 font-medium block mb-4">Allergens Information:</span>
+                <div className="flex flex-wrap gap-4">
                   {item.allergens.map((allergen) => {
                     const Icon = allergenIcons[allergen];
                     return Icon ? (
-                      <div
-                        key={allergen}
-                        className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center"
-                        title={allergen}
-                      >
-                        <Icon size={18} className="text-gray-700" />
+                      <div key={allergen} className="flex flex-col items-center gap-2">
+                        <div
+                          className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center border border-gray-100"
+                          title={allergen}
+                        >
+                          <Icon size={24} className="text-gray-700" />
+                        </div>
+                        <span className="text-xs text-gray-500">{allergen}</span>
                       </div>
                     ) : null;
                   })}
                 </div>
-              </div>
-            )}
-
-            {item.isVegetarian && (
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 border border-green-300">
-                <Leaf size={16} className="text-green-600" />
-                <span className="text-base text-green-600 font-medium">Vegetarian</span>
               </div>
             )}
           </div>
@@ -409,6 +444,12 @@ export function Menu() {
   const [dietaryFilter, setDietaryFilter] = useState<"all" | "vegetarian" | "nonVegetarian">("all");
   const [spicinessFilter, setSpicinessFilter] = useState<number | null>(null);
   const [selectedDetailItem, setSelectedDetailItem] = useState<typeof menuItems[0] | null>(null);
+
+  const spicinesslevels = [
+    { level: 1, desc: "Little bit (Mild)" },
+    { level: 2, desc: "Shin Ramyun (Medium)" },
+    { level: 3, desc: "Buldak (Extreme)" }
+  ];
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
@@ -488,29 +529,98 @@ export function Menu() {
       </section>
 
       {/* Categories Section */}
-      <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 bg-black">
+      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-black">
         <div className="max-w-7xl mx-auto">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="flex flex-wrap justify-center gap-3 sm:gap-4"
-          >
+          {/* 1. 메인 카테고리 버튼들 */}
+          <motion.div className="flex flex-wrap justify-center gap-3 mb-10">
             {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => handleCategoryChange(category)}
-                className={`px-6 sm:px-8 py-2.5 sm:py-3 rounded-full border-2 transition-all duration-300 font-medium ${
+                className={`px-6 py-2.5 rounded-full border-2 transition-all font-medium ${
                   selectedCategory === category
                     ? "bg-white text-black border-white"
-                    : "bg-transparent text-white border-white hover:bg-white/10"
+                    : "bg-transparent text-white border-white/30 hover:border-white"
                 }`}
               >
                 {t(`menu.categories.${category}`)}
               </button>
             ))}
           </motion.div>
+
+          {/* 2. 필터 섹션 (카테고리 아래에 상시 노출) */}
+          <div className="flex flex-col items-center gap-6 mb-12 border-t border-white/10 pt-8">
+            {/* Dietary Filter */}
+            <div className="flex flex-wrap justify-center gap-3">
+              <span className="w-full text-center text-sm text-white/50 mb-1">Dietary Preference</span>
+              {[
+                { id: "all", label: "All", icon: UtensilsCrossed },
+                { id: "vegetarian", label: "Vegetarian", icon: Leaf },
+                { id: "nonVegetarian", label: "Meat", icon: Drumstick }
+              ].map((filter) => (
+                <button
+                  key={filter.id}
+                  onClick={() => setDietaryFilter(filter.id as any)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all text-sm ${
+                    dietaryFilter === filter.id 
+                      ? "bg-green-600 border-green-600 text-white" 
+                      : "bg-white/5 border-white/10 text-white/70 hover:border-white/40"
+                  }`}
+                >
+                  <filter.icon size={14} />
+                  {filter.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Spiciness Filter (Hover Modal 적용) */}
+            <div className="flex flex-wrap justify-center gap-3">
+              <span className="w-full text-center text-sm text-white/50 mb-1">Max Spiciness</span>
+              <button
+                onClick={() => setSpicinessFilter(null)}
+                className={`px-4 py-2 rounded-full border text-sm transition-all ${
+                  spicinessFilter === null ? "bg-white text-black" : "bg-white/5 border-white/10 text-white/60"
+                }`}
+              >
+                Any
+              </button>
+              
+              {spicinesslevels.map((s) => (
+                <div key={s.level} className="relative group">
+                  <button
+                    onClick={() => setSpicinessFilter(s.level)}
+                    className={`flex items-center gap-1 px-4 py-2 rounded-full border transition-all ${
+                      spicinessFilter === s.level 
+                        ? "bg-red-600 border-red-600 text-white" 
+                        : "bg-white/5 border-white/10 text-white/60"
+                    }`}
+                  >
+                    {Array.from({ length: s.level }).map((_, i) => (
+                      <Flame key={i} size={14} fill={spicinessFilter === s.level ? "white" : "currentColor"} />
+                    ))}
+                  </button>
+
+                  {/* Hover Modal (Tooltip) */}
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-48 p-3 bg-white text-black rounded-xl shadow-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+                    <div className="flex flex-col items-center gap-2">
+                      <div className="flex gap-1">
+                        {Array.from({ length: s.level }).map((_, i) => (
+                          <Flame key={i} size={16} className="text-red-600" fill="currentColor" />
+                        ))}
+                      </div>
+                      <p className="text-xs font-bold text-center leading-tight">
+                        {s.level === 1 && "Not that spicy (Mild)"}
+                        {s.level === 2 && "Shin Ramyun level"}
+                        {s.level === 3 && "Buldak level (Extremely hot!)"}
+                      </p>
+                    </div>
+                    {/* 화살표 */}
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-white"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
 
           {/* Fried Chicken - Style, Size, Portion, then Flavor */}
           {selectedCategory === "friedChicken" && (
@@ -970,7 +1080,9 @@ export function Menu() {
 
       {/* Menu Items Section */}
       <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-black">
+
         <div className="max-w-7xl mx-auto">
+          {/* Menu Items Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
             {filteredItems.map((item, index) => (
               <motion.div
@@ -989,48 +1101,63 @@ export function Menu() {
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                 </div>
-                <div className="p-3 sm:p-6">
+                {/* Item Details */}
+                <div className="p-3 sm:p-6"> {/* flex flex-col h-full 일단 제거 */}
                   <div className="flex justify-between items-start mb-1 sm:mb-2">
                     <h3 className="text-base sm:text-2xl font-bold">{item.name}</h3>
                     <p className="text-sm sm:text-xl font-semibold text-white/90">{item.price}</p>
                   </div>
-                  <p className="text-white/70 text-xs sm:text-base leading-relaxed mb-2 sm:mb-4 line-clamp-2">
+                  
+                  <p className="text-white/70 text-xs sm:text-base leading-relaxed mb-3 sm:mb-4 line-clamp-2">
                     {item.description}
                   </p>
-                  
-                  {/* Spiciness Level */}
-                  {item.spiciness > 0 && (
-                    <div className="flex items-center gap-1 sm:gap-2 mb-2 sm:mb-3">
-                      <div className="flex gap-1">
-                        {Array.from({ length: item.spiciness }).map((_, i) => (
-                          <Flame
-                            key={i}
-                            size={12}
-                            className={
-                              item.spiciness === 1
-                                ? "text-orange-400"
-                                : item.spiciness === 2
-                                ? "text-red-500"
-                                : "text-red-600"
-                            }
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  )}
 
-                  {/* Vegetarian Badge */}
-                  {item.isVegetarian && (
-                    <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/20 border border-green-500/30">
-                      <Leaf size={10} className="text-green-400" />
-                      <span className="text-xs text-green-400 font-medium">{t("menu.vegetarian")}</span>
-                    </div>
-                  )}
+                  {/* 태그들을 한 줄로 나란히 배치 (감싸는 로직 단순화) */}
+                  <div className="flex flex-wrap items-center gap-2">
+                    
+                    {/* 1. Halal Tag */}
+                    {item.category === "friedChicken" && (
+                      <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-white/10 border border-white/20">
+                        <span className="text-[10px] font-bold text-white/90 uppercase tracking-tight">Halal</span>
+                      </div>
+                    )}
+
+                    {/* 2. Spiciness Tag */}
+                    {item.spiciness > 0 && (
+                      <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-red-500/10 border border-red-500/20">
+                        <div className="flex gap-0.5">
+                          {Array.from({ length: item.spiciness }).map((_, i) => (
+                            <Flame
+                              key={i}
+                              size={12}
+                              className={
+                                item.spiciness === 1 ? "text-orange-400" : 
+                                item.spiciness === 2 ? "text-red-500" : "text-red-600"
+                              }
+                              fill="currentColor"
+                            />
+                          ))}
+                        </div>
+                        <span className="text-[10px] font-bold text-red-400/90 uppercase ml-0.5">Spicy</span>
+                      </div>
+                    )}
+
+                    {/* 3. Vegetarian Tag */}
+                    {item.isVegetarian && (
+                      <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-green-500/10 border border-green-500/20">
+                        <Leaf size={12} className="text-green-400" />
+                        <span className="text-[10px] text-green-400 font-bold uppercase">
+                          {t("menu.vegetarian")}
+                        </span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </motion.div>
             ))}
           </div>
 
+          {/* No Results Message */}
           {filteredItems.length === 0 && (
             <motion.div
               initial={{ opacity: 0 }}
