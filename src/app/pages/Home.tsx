@@ -121,6 +121,7 @@ export function Home() {
           >
             <Link
               to="/menu"
+              onClick={() => window.scrollTo(0, 0)}
               className="inline-block bg-white text-black px-8 py-3 rounded-full font-semibold hover:bg-white/90 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
             >
               Go to menu
@@ -138,7 +139,7 @@ export function Home() {
         className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-black border-t border-white/10"
       >
         <div className="max-w-7xl mx-auto">
-          <Link to="/about" className="block">
+          <Link to="/about" onClick={() => window.scrollTo(0, 0)} className="block">
             <div className="text-center space-y-6 cursor-pointer group">
               <motion.h2 
                 initial={{ opacity: 0, y: 20 }}
@@ -220,6 +221,7 @@ export function Home() {
                       </p>
                       <Link
                         to="/menu"
+                        onClick={() => window.scrollTo(0, 0)}
                         className="inline-flex items-center gap-2 text-white hover:text-white/80 transition-colors text-lg font-medium"
                       >
                         <span>View full menu</span>
@@ -474,6 +476,7 @@ export function Home() {
               {/* Reservation Link */}
               <Link
                 to="/contact"
+                onClick={() => window.scrollTo(0, 0)}
                 className="inline-block border border-white px-8 py-3 text-sm rounded-full hover:bg-white hover:text-black transition-all duration-300 mt-8"
               >
                 Make a reservation

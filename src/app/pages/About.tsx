@@ -484,6 +484,7 @@ export function About() {
               {/* Reservation Link */}
               <Link
                 to="/contact"
+                onClick={() => window.scrollTo(0, 0)}
                 className="inline-block border border-white px-8 py-3 text-sm rounded-full hover:bg-white hover:text-black transition-all duration-300 mt-8"
               >
                 Make a reservation
