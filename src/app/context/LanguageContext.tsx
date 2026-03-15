@@ -51,7 +51,9 @@ const translations = {
     "about.value3Text": "We believe in building lasting relationships with our customers and being part of the local community.",
     "about.hansikTitle": "Korean Traditional Cuisine",
     "about.hansikText": "Hansik represents the traditional food culture of Korea, emphasizing balanced nutrition and harmony. Our dishes are inspired by this centuries-old culinary tradition, bringing authentic Korean flavors to Cologne. From our signature fried chicken to traditional side dishes, every element is crafted with respect for Korean culinary heritage.",
-    
+    "about.teamTitle": "Our Team",
+    "about.teamText": "Our team is a passionate group of food lovers dedicated to bringing the best of Korean cuisine to our customers. From our skilled chefs who craft each dish with care to our friendly staff who ensure a welcoming dining experience, we are committed to excellence in everything we do. Meet the people behind Hankki and discover the passion that drives us to serve delicious Korean fried chicken and more.",
+
     // Menu page
     "menu.title": "Menu",
     "menu.categories.all": "All",
@@ -194,7 +196,9 @@ const translations = {
     "about.value3Text": "Wir glauben daran, dauerhafte Beziehungen zu unseren Kunden aufzubauen.",
     "about.hansikTitle": "Traditionelle Koreanische Küche",
     "about.hansikText": "Hansik repräsentiert die traditionelle Esskultur Koreas und betont ausgewogene Ernährung und Harmonie. Unsere Gerichte sind von dieser jahrhundertealten kulinarischen Tradition inspiriert und bringen authentische koreanische Aromen nach Köln.",
-    
+    "about.teamTitle": "Unser Team",
+    "about.teamText": "Unser Team ist eine leidenschaftliche Gruppe von Feinschmeckern, die sich der Aufgabe verschrieben haben, das Beste der koreanischen Küche zu unseren Kunden zu bringen. Von unseren talentierten Köchen, die jedes Gericht mit Sorgfalt zubereiten, bis hin zu unserem freundlichen Personal, das für ein einladendes Esserlebnis sorgt, setzen wir uns in allem, was wir tun, für Exzellenz ein. Lernen Sie die Menschen hinter Hankki kennen und entdecken Sie die Leidenschaft, die uns antreibt, köstliches koreanisches Brathähnchen und mehr zu servieren.",
+
     // Menu page
     "menu.title": "Speisekarte",
     "menu.categories.all": "Alle",
@@ -337,7 +341,8 @@ const translations = {
     "about.value3Text": "고객과의 지속적인 관계를 구축하고 지역 사회의 일부가 되는 것을 믿습니다.",
     "about.hansikTitle": "한국 전통 요리",
     "about.hansikText": "한식은 한국의 전통 음식 문화를 나타내며 균형 잡힌 영양과 조화를 강조합니다. 우리의 요리는 이 수세기 된 요리 전통에서 영감을 받아 자카르타에 정통 한국 맛을 선사합니다.",
-    
+    "about.teamTitle": "우리 팀",
+    "about.teamText": "우리 팀은 고객에게 최고의 한국 요리를 제공하기 위해 헌신하는 열정적인 음식 애호가 그룹입니다. 각 요리를 정성스럽게 준비하는 재능 있는 셰프부터 친절한 직원까지, 우리는 우리가 하는 모든 일에서 탁월함을 위해 노력합니다. Hankki의 사람들을 만나고 맛있는 한국 치킨과 더 많은 것을 제공하기 위해 우리를 움직이는 열정을 발견하십시오.",
     // Menu page
     "menu.title": "메뉴",
     "menu.categories.all": "전체",

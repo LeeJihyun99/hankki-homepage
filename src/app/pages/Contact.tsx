@@ -5,6 +5,7 @@ import { useLanguage } from "../context/LanguageContext";
 import { motion } from "framer-motion"; // motion/react 대신 framer-motion 권장 (환경에 따라 조정)
 import woltLogo from "../../assets/wolt_logo.png";
 import Swal from 'sweetalert2';
+import ContactSection from "../components/ContactSection";
 
 
 export function Contact() {
@@ -176,133 +177,81 @@ export function Contact() {
       {/* Contact & Reservation Section */}
       <section className="py-16 sm:py-20 lg:py-24 px-8 bg-black">
         <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
-            {/* Contact Information */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-3xl sm:text-4xl font-bold mb-8">{t("contact.title")}</h2>
-              <div className="space-y-6 mb-8">
-                <div className="flex items-start gap-4">
-                  <div className="bg-white/10 p-3 rounded-2xl"><MapPin size={24} /></div>
-                  <div>
-                    <h3 className="font-semibold mb-1">{t("contact.address")}</h3>
-                    <p className="text-white/70">Brabanter Str. 42, 50672, Köln</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="bg-white/10 p-3 rounded-2xl"><Mail size={24} /></div>
-                  <div>
-                    <h3 className="font-semibold mb-1">{t("contact.email")}</h3>
-                    <a href="mailto:info@hankki.de" className="text-white/70 hover:text-white">info@hankki.de</a>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="bg-white/10 p-3 rounded-2xl"><Phone size={24} /></div>
-                  <div>
-                    <h3 className="font-semibold mb-1">{t("contact.phone")}</h3>
-                    <a href="tel:+4922167811694" className="text-white/70 hover:text-white">+49 (0)221 6781 1694</a>
-                  </div>
-                </div>
-              </div>
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-stretch">
+            {/* Left: Contact Info & Map */}
+            <div className="flex flex-col h-full">
+              <ContactSection isVertical={true} />
+            </div>
 
-              {/* Social Media & Wolt */}
-              <div className="flex gap-4 mt-12">
-                {[
-                  { icon: <Map size={24} />, href: "https://maps.app.goo.gl/dormANvFEaFrd4PF9" },
-                  { icon: <Instagram size={24} />, href: "https://www.instagram.com/hankki.koeln/?hl=en" },
-                  { icon: <Facebook size={24} />, href: "https://www.facebook.com/Hankki.Koeln/" }
-                ].map((social, i) => (
-                  <motion.a key={i} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} href={social.href} target="_blank" className="bg-white/10 p-3 rounded-2xl hover:bg-white/20 transition-colors">
-                    {social.icon}
-                  </motion.a>
-                ))}
-              </div>
-              <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="mt-8">
-                <a href="https://wolt.com/ko/deu/cologne/restaurant/hankki" target="_blank" rel="noopener noreferrer">
-                  <img src={woltLogo} alt="Wolt" className="h-14 w-auto" />
-                </a>
-              </motion.div>
-            </motion.div>
-
-            {/* Reservation Form */}
+            {/* Right: Reservation Form */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
+              className="flex flex-col h-full"
             >
-              <h2 className="text-3xl sm:text-4xl font-bold mb-8">{t("contact.reservation")}</h2>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Name */}
-                <div>
-                  <label className="block text-sm font-medium mb-2">{t("contact.name")} *</label>
-                  <input type="text" name="name" value={formData.name} onChange={handleChange} required className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white focus:outline-none focus:border-white/40" placeholder={t("contact.namePlaceholder")} />
-                </div>
-
-                {/* Phone & Email */}
-                <div className="grid sm:grid-cols-2 gap-6">
+              <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-white">{t("contact.reservation")}</h2>
+              <form onSubmit={handleSubmit} className="space-y-6 flex-grow flex flex-col justify-between">
+                <div className="space-y-6">
                   <div>
-                    <label className="block text-sm font-medium mb-2">{t("contact.phoneNumber")} *</label>
-                    <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white focus:outline-none focus:border-white/40" placeholder={t("contact.phonePlaceholder")} />
+                    <label className="block text-sm font-medium mb-2 text-white">{t("contact.name")} *</label>
+                    <input type="text" name="name" value={formData.name} onChange={handleChange} required className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white focus:outline-none focus:border-white/40" placeholder={t("contact.namePlaceholder")} />
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">{t("contact.emailAddress")} *</label>
-                    <input type="email" name="email" value={formData.email} onChange={handleChange} required className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white focus:outline-none focus:border-white/40" placeholder={t("contact.emailPlaceholder")} />
-                  </div>
-                </div>
 
-                {/* Guests & Date */}
-                <div className="grid sm:grid-cols-2 gap-6">
+                  <div className="grid sm:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-medium mb-2 text-white">{t("contact.phoneNumber")} *</label>
+                      <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white focus:outline-none focus:border-white/40" placeholder={t("contact.phonePlaceholder")} />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2 text-white">{t("contact.emailAddress")} *</label>
+                      <input type="email" name="email" value={formData.email} onChange={handleChange} required className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white focus:outline-none focus:border-white/40" placeholder={t("contact.emailPlaceholder")} />
+                    </div>
+                  </div>
+
+                  <div className="grid sm:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-medium mb-2 text-white">{t("contact.numberOfGuests")} *</label>
+                      <select name="guests" value={formData.guests} onChange={handleChange} required className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white focus:outline-none [&>option]:bg-black">
+                        <option value="" disabled>{t("contact.selectGuests")}</option>
+                        {[1, 2, 3, 4, 5, 6].map(num => (
+                          <option key={num} value={num}>{num} {num === 1 ? t("contact.guest") : t("contact.guestsPlural")}</option>
+                        ))}
+                        <option value="7+">7+ {t("contact.guestsPlural")}</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2 text-white">{t("contact.date")} *</label>
+                      <input type="date" name="date" min={minDate} value={formData.date} onChange={handleChange} required className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white focus:outline-none [&::-webkit-calendar-picker-indicator]:invert" />
+                    </div>
+                  </div>
+
                   <div>
-                    <label className="block text-sm font-medium mb-2">{t("contact.numberOfGuests")} *</label>
-                    <select name="guests" value={formData.guests} onChange={handleChange} required className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white focus:outline-none [&>option]:bg-black">
-                      <option value="" disabled>{t("contact.selectGuests")}</option>
-                      {[1, 2, 3, 4, 5, 6].map(num => (
-                        <option key={num} value={num}>{num} {num === 1 ? t("contact.guest") : t("contact.guestsPlural")}</option>
+                    <label className="block text-sm font-medium mb-2 text-white">{t("contact.time")} *</label>
+                    <select name="time" value={formData.time} onChange={handleChange} required disabled={!formData.date} className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white focus:outline-none [&>option]:bg-black">
+                      <option value="" disabled>{!formData.date ? "Select date first" : t("contact.selectTime")}</option>
+                      {getTimeSlots().map(slot => (
+                        <option key={slot.value} value={slot.value}>{slot.label}</option>
                       ))}
-                      <option value="7+">7+ {t("contact.guestsPlural")}</option>
                     </select>
                   </div>
+
                   <div>
-                    <label className="block text-sm font-medium mb-2">{t("contact.date")} *</label>
-                    <input type="date" name="date" min={minDate} value={formData.date} onChange={handleChange} required className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white focus:outline-none [&::-webkit-calendar-picker-indicator]:invert" />
+                    <label className="block text-sm font-medium mb-2 text-white">Special Notes</label>
+                    <textarea name="note" value={formData.note} onChange={handleChange} rows={3} className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white focus:outline-none focus:border-white/40 resize-none" placeholder="Allergies, special occasions, etc." />
                   </div>
                 </div>
 
-                {/* Time */}
-                <div>
-                  <label className="block text-sm font-medium mb-2">{t("contact.time")} *</label>
-                  <select name="time" value={formData.time} onChange={handleChange} required disabled={!formData.date} className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white focus:outline-none [&>option]:bg-black">
-                    <option value="" disabled>{!formData.date ? "Select date first" : t("contact.selectTime")}</option>
-                    {getTimeSlots().map(slot => (
-                      <option key={slot.value} value={slot.value}>{slot.label}</option>
-                    ))}
-                  </select>
-                  {formData.date && getTimeSlots().length === 0 && (
-                    <p className="text-red-400 text-xs mt-2 font-medium">{t("contact.mondayClosed")}</p>
-                  )}
-                </div>
+                <div className="mt-8">
+                  <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} type="submit" className="w-full bg-white text-black font-bold py-4 rounded-full transition-colors">
+                    {t("contact.submit")}
+                  </motion.button>
 
-                {/* Note Field (New) */}
-                <div>
-                  <label className="block text-sm font-medium mb-2">Special Notes</label>
-                  <textarea name="note" value={formData.note} onChange={handleChange} rows={3} className="w-full bg-white/5 border border-white/20 rounded-2xl px-4 py-3 text-white focus:outline-none focus:border-white/40 resize-none" placeholder="Allergies, special occasions, etc." />
-                </div>
-
-                <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} type="submit" className="w-full bg-white text-black font-bold py-4 rounded-full transition-colors">
-                  {t("contact.submit")}
-                </motion.button>
-
-                {/* Warning Message */}
-                <div className="text-center space-y-2">
-                  <p className="text-red-500 font-bold text-sm">
-                    {t("contact.alert")}
-                  </p>
-                  <p className="text-xs text-white/60">{t("contact.required")}</p>
+                  <div className="text-center mt-4 space-y-2">
+                    <p className="text-red-500 font-bold text-sm">{t("contact.alert")}</p>
+                    <p className="text-xs text-white/60">{t("contact.required")}</p>
+                  </div>
                 </div>
               </form>
             </motion.div>
