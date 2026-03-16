@@ -2,10 +2,11 @@ import { useState, useMemo } from "react";
 import { MapPin, Mail, Phone, Facebook, Instagram, Map } from "lucide-react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { useLanguage } from "../context/LanguageContext";
-import { motion } from "framer-motion"; // motion/react 대신 framer-motion 권장 (환경에 따라 조정)
+import { motion } from "motion/react";
 import woltLogo from "../../assets/wolt_logo.png";
 import Swal from 'sweetalert2';
 import ContactSection from "../components/ContactSection";
+import OpeningHours from "../components/OpeningHours";
 
 
 export function Contact() {
@@ -69,7 +70,7 @@ export function Contact() {
     // 1. 구글 시트로 데이터 전송
     await fetch(GOOGLE_SHEET_URL, {
       method: "POST",
-      mode: "no-cors", // 구글 스크립트 특성상 no-cors가 안정적입니다
+      mode: "no-cors",
       headers: {
         "Content-Type": "application/json",
       },
@@ -85,7 +86,7 @@ export function Contact() {
       background: '#1a1a1a',
       color: '#ffffff',
       customClass: {
-        popup: 'rounded-3xl' // 모서리를 둥글게 하고 싶을 경우
+        popup: 'rounded-3xl'
       }
     });
 
@@ -259,43 +260,8 @@ export function Contact() {
         </div>
       </section>
 
-      {/* Opening Hours Section (Same as before) */}
-      <motion.section initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="relative py-20 border-t border-white/10 px-8 overflow-hidden">
-        <div className="absolute inset-0">
-          <ImageWithFallback src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1080" alt="Restaurant ambiance" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-black/85"></div>
-        </div>
-        <div className="relative max-w-4xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12">{t("home.openingHours")}</h2>
-          <div className="space-y-6 max-w-2xl mx-auto">
-            <div className="flex justify-between border-b border-white/20 pb-4">
-              <span className="text-lg font-medium">{t("days.monday")}</span>
-              <span className="text-white/70">{t("home.closed")}</span>
-            </div>
-            <div className="flex justify-between border-b border-white/20 pb-4">
-              <span className="text-lg font-medium">{t("days.tuesday")} - {t("days.friday")}</span>
-              <div className="text-right">
-                <p>5:00 PM - 12:00 AM</p>
-                <p className="text-sm text-white/60">({t("home.kitchenUntil")} 10:30 PM)</p>
-              </div>
-            </div>
-            <div className="flex justify-between border-b border-white/20 pb-4">
-              <span className="text-lg font-medium">{t("days.saturday")}</span>
-              <div className="text-right">
-                <p>12:00 PM - 12:00 AM</p>
-                <p className="text-sm text-white/60">({t("home.kitchenUntil")} 10:30 PM)</p>
-              </div>
-            </div>
-            <div className="flex justify-between border-b border-white/20 pb-4">
-              <span className="text-lg font-medium">{t("days.sunday")}</span>
-              <div className="text-right">
-                <p>12:00 PM - 12:00 AM</p>
-                <p className="text-sm text-white/60">({t("home.kitchenUntil")} 10:00 PM)</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </motion.section>
+      {/* Opening Hours Section*/}
+      <OpeningHours />
     </div>
   );
 }
