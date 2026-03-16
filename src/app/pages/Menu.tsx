@@ -128,26 +128,31 @@ export function Menu() {
 
   return (
     <div className="min-h-screen bg-black text-white">
+            {/* Menu Image */}
             <section className="relative h-screen flex items-center justify-center">
+              {/* Image Container */}
               <div className="absolute inset-0">
                 <ImageWithFallback src={foodIMg} alt="About Us" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black"></div>
               </div>
               <motion.div className="relative text-center z-10 px-4">
+                {/* Menu Title */}
                 <motion.h1 
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="text-4xl sm:text-5xl lg:text-6xl font-bold"
+                  className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-10"
                 >
                   {t("menu.title")}
                 </motion.h1>
-                <a href={menuPDF} download className="inline-flex items-center gap-2 bg-white text-black px-8 py-4 rounded-full font-black text-sm hover:scale-105 transition-transform">
-          <Download size={20} />
-          <span>{t("menu.downloadPDF")}</span>
+                {/* Download Button */}
+                <a href={menuPDF} download className="inline-flex items-center gap-2 bg-white text-black px-8 py-3 rounded-full font-semibold hover:bg-white/90 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                <Download size={20} />
+                <span>{t("menu.downloadPDF")}</span>
                 </a>
               </motion.div>
             </section>
 
+      {/* Filter Navigation */}
       <nav className="sticky top-0 bg-black/95 backdrop-blur-xl z-40 border-y border-white/10">
         <div className="max-w-7xl mx-auto px-4 overflow-x-auto no-scrollbar">
           <div className="flex justify-start md:justify-center gap-3 py-5">
@@ -165,6 +170,7 @@ export function Menu() {
           </div>
         </div>
 
+        {/* Dietary Filter */}
         <div className="bg-white/5 py-4 px-6 border-t border-white/5">
           <div className="max-w-7xl mx-auto flex justify-center gap-4">
             <div className="relative">
@@ -190,6 +196,7 @@ export function Menu() {
         </div>
       </nav>
 
+      {/* Menu Items */}
       <section className="py-16 px-6 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           <AnimatePresence mode="popLayout">
@@ -222,7 +229,7 @@ export function Menu() {
                     <span className="font-mono text-lg text-white/60">€{item.price}</span>
                   </div>
 
-                  {/* 음식 이름 바로 밑에 Tag들 추가 */}
+                  {/* Dietary Tags */}
                   <div className="flex flex-wrap gap-2 mb-4">
                     {item.vegetarian && (
                       <div className="flex items-center gap-1 px-2 py-0.5 bg-green-500/10 border border-green-500/20 rounded-md">
