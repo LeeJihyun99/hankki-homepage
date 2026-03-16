@@ -11,9 +11,9 @@ import { menuItems, MenuItem } from "../../data/menuItems";
 import { allergensMap } from "../../data/allergens";
 import foodIMg from "../../assets/foodIMGs/Hankki  cover 2.jpg"
 
-const mainCategories = ["all", "stew", "soup", "bulgogi", "chicken", "noodle", "bibimbap", "streetfood", "pancake", "side"];
+const mainCategories = ["all", "stew", "soup", "bulgogi", "chicken", "friedChicken", "noodle", "bibimbap", "streetfood", "pancake", "side"];
 
-// 맵기 설명 툴팁 데이터
+// 맵기 정도 설명
 const spicinessDesc: Record<number, string> = {
   0: "Not Spicy",
   1: "Mild (신라면 정도)",
