@@ -1,51 +1,64 @@
-export type MenuItem = {
-  id: number
-  name: string
-  description: string
-  category: string
-  price: number
-  image: string
-  spiciness: number
-  vegetarian: boolean
-  halal: boolean
-  allergens: string[]
+import buddejjigaeImg from "../assets/foodIMGs/Hankki  17. Budae-Jjigae.jpg";
+import bulgogiJeongolImg from "../assets/foodIMGs/Hankki  8. Bulgogi.jpg";
+import dakgalbiImg from "../assets/foodIMGs/Hankki  18. Jjim-Dak.jpg";
+export interface MenuItem {
+  id: number;
+  nameKey: string;      // 번역을 위한 키 추가
+  descKey: string;      // 번역을 위한 키 추가
+  category: string;
+  price: number;
+  image: string;
+  spiciness: number;
+  vegetarian: boolean;
+  halal: boolean;
+  allergens: string[];
+  includedKeys?: string[]; // 여러 개의 포함 사항 키 배열
+  extraKeys?: string[];    // 여러 개의 추가 옵션 키 배열
 }
 
-export const menuItems = [
+export const menuItems: MenuItem[] = [
 
 /* ---------- STEW ---------- */
 
 {
 id:1,
-name:"Budae Jjigae",
+nameKey:"menu.items.budaeJjigae",
+descKey:"menu.items.budaeJjigaeDesc",
 category:"stew",
 price:29,
+image:buddejjigaeImg,
 spiciness:2,
 vegetarian:false,
 halal:false,
 allergens:["A","F","N"]
+},
+
+{
+id:2,
+nameKey:"menu.items.bulgogijeongol",
+descKey:"menu.items.bulgogijeongolDesc",
+category:"stew",
+price:35,
+image:bulgogiJeongolImg,
+spiciness:0,
+vegetarian:false,
+halal:true,
+allergens:["A","F", "N"]
 },
 
 {
 id:3,
-name:"Bulgogi Jeongol",
+nameKey:"menu.items.dakgalbi",
+descKey:"menu.items.dakgalbiDesc",
 category:"stew",
-price:35,
-spiciness:1,
-vegetarian:false,
-halal:true,
-allergens:["A","F","N"]
-},
-
-{
-id:10,
-name:"Kimchi Jjigae",
-category:"stew",
-price:15,
+price:30,
+image:dakgalbiImg,
 spiciness:2,
 vegetarian:false,
 halal:false,
-allergens:["A","F","N"]
+allergens:["A","F","N"],
+includedKeys:["menu.items.dakgalbi.included"],
+extraKeys:["menu.items.dakgalbi.extra"]
 },
 
 {

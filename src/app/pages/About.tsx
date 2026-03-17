@@ -18,7 +18,7 @@ export function About() {
   return (
     <div>
       {/* 1. Hero Section - 깔끔한 인트로 */}
-      <section className="relative h-screen flex items-center justify-center">
+      <section className="relative h-[50vh] flex items-center justify-center">
         <div className="absolute inset-0">
           <ImageWithFallback src={hankkiOutsideImg} alt="About Us" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black"></div>

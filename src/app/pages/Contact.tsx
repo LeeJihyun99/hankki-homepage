@@ -60,9 +60,8 @@ export function Contact() {
 
   const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
-  setIsSubmitting(true); // 로딩 시작
+  setIsSubmitting(true);
 
-  // 구글 시트 배포 후 받은 웹 앱 URL을 여기에 넣으세요
   const GOOGLE_SHEET_URL = import.meta.env.VITE_GOOGLE_SCRIPT_WEB_APP_URL;
   console.log("google sheet url", GOOGLE_SHEET_URL);
 
@@ -155,7 +154,7 @@ export function Contact() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center">
+      <section className="relative h-[50vh] flex items-center justify-center">
         <div className="absolute inset-0">
           <ImageWithFallback src={hankkiOutsideImg} alt="About Us" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black"></div>
