@@ -25,8 +25,9 @@ export function About() {
         </div>
         <motion.div className="relative text-center z-10 px-4">
           <motion.h1 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
             className="text-4xl sm:text-5xl lg:text-6xl font-bold"
           >
             {t("about.title")}
@@ -38,7 +39,11 @@ export function About() {
       <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-32">
         {/* Our Story */}
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
+          <motion.div  
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}>
             <span className="text-zinc-500 uppercase tracking-widest text-sm font-semibold">Since 2020</span>
             <h2 className="text-4xl sm:text-5xl font-bold mt-4 mb-8">{t("about.ourStory")}</h2>
             <p className="text-zinc-400 text-lg leading-relaxed">{t("about.storyText")}</p>
@@ -53,7 +58,10 @@ export function About() {
           <motion.div className="order-2 lg:order-1 rounded-3xl overflow-hidden aspect-[4/5] lg:aspect-square shadow-2xl">
             <ImageWithFallback src={teamImg} className="w-full h-full object-cover" />
           </motion.div>
-          <motion.div className="order-1 lg:order-2" initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
+          <motion.div className="order-1 lg:order-2" initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}>
             <h2 className="text-4xl sm:text-5xl font-bold mb-8">{t("about.teamTitle")}</h2>
             <p className="text-zinc-400 text-lg leading-relaxed">{t("about.teamText")}</p>
           </motion.div>
@@ -64,17 +72,23 @@ export function About() {
       <section className="bg-black py-32">
         <div className="max-w-7xl mx-auto px-4">
           {/* Hansik Intro */}
-          <div className="text-center max-w-3xl mx-auto mb-20">
+          <motion.div initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }} className="text-center max-w-3xl mx-auto mb-20">
             <h2 className="text-8xl sm:text-9xl lg:text-[10rem] font-bold text-white/5 pointer-events-none select-none">Hansik</h2>
             <h3 className="text-3xl sm:text-4xl font-bold mb-6">{t("about.hansikTitle")}</h3>
             <p className="text-zinc-400 text-lg">{t("about.hansikText")}</p>
-          </div>
+          </motion.div>
 
           {/* New Content: Chicken & Drinks Grid */}
           <div className="grid md:grid-cols-2 gap-8">
             {/* Korean Fried Chicken Card */}
             <motion.div 
-              whileHover={{ y: -10 }}
+              initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
               className="group relative h-[500px] rounded-3xl overflow-hidden cursor-default"
             >
               <ImageWithFallback src={chickenImg} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />

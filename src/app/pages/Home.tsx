@@ -141,6 +141,7 @@ export function Home() {
         viewport={{ once: true }}
         className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-black border-t"
       >
+        {/* About Us Content */}
         <div className="max-w-7xl mx-auto px-8">
           <Link to="/about" onClick={() => window.scrollTo(0, 0)} className="block">
             <div className="text-center space-y-6 cursor-pointer group">

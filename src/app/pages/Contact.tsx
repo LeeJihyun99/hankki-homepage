@@ -7,7 +7,7 @@ import woltLogo from "../../assets/wolt_logo.png";
 import Swal from 'sweetalert2';
 import ContactSection from "../components/ContactSection";
 import OpeningHours from "../components/OpeningHours";
-
+import hankkiOutsideImg from "../../assets/hankkiOutsideImg.png";
 
 export function Contact() {
   const { t } = useLanguage();
@@ -155,24 +155,21 @@ export function Contact() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative h-[40vh] sm:h-[50vh] overflow-hidden flex items-center justify-center">
+      <section className="relative h-screen flex items-center justify-center">
         <div className="absolute inset-0">
-          <ImageWithFallback
-            src="https://images.unsplash.com/photo-1624726175512-19b9baf9fbd1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxrb3JlYW4lMjBjaGlja2VuJTIwd2luZ3MlMjBzcGljeSUyMHNhdWNlfGVufDF8fHx8MTc3MjkzMjc0Nnww&ixlib=rb-4.1.0&q=80&w=1080"
-            alt="Contact"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-            <motion.h1 
+          <ImageWithFallback src={hankkiOutsideImg} alt="About Us" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black"></div>
+        </div>
+        <motion.div className="relative text-center z-10 px-4">
+          <motion.h1 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-4xl sm:text-5xl lg:text-6xl font-bold"
-            >
-              {t("contact.title")}
-            </motion.h1>
-          </div>
-        </div>
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold"
+          >
+            {t("contact.title")}
+          </motion.h1>
+        </motion.div>
       </section>
 
       {/* Contact & Reservation Section */}

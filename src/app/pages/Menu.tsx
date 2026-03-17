@@ -135,20 +135,33 @@ export function Menu() {
                 <ImageWithFallback src={foodIMg} alt="About Us" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black"></div>
               </div>
-              <motion.div className="relative text-center z-10 px-4">
+              {/* Menu Content */}
+              <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative text-center z-10 px-4">
                 {/* Menu Title */}
                 <motion.h1 
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
                   className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-10"
                 >
                   {t("menu.title")}
-                </motion.h1>
+                </motion.h1 >
                 {/* Download Button */}
-                <a href={menuPDF} download className="inline-flex items-center gap-2 bg-white text-black px-8 py-3 rounded-full font-semibold hover:bg-white/90 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+                <a href={menuPDF} download 
+                  className="inline-flex items-center gap-2 bg-white text-black px-8 py-3 rounded-full font-semibold hover:bg-white/90 duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
                 <Download size={20} />
                 <span>{t("menu.downloadPDF")}</span>
                 </a>
+                </motion.div>
               </motion.div>
             </section>
 
