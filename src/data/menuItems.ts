@@ -1,320 +1,230 @@
 import buddejjigaeImg from "../assets/foodIMGs/Hankki  17. Budae-Jjigae.jpg";
 import bulgogiJeongolImg from "../assets/foodIMGs/Hankki  8. Bulgogi.jpg";
 import dakgalbiImg from "../assets/foodIMGs/Hankki  18. Jjim-Dak.jpg";
+import gochujangBulgogiImg from "../assets/foodIMGs/Hankki  7. Gochujang-Bulgogi.jpg";
+import ganjangDoejiBulgogiImg from "../assets/foodIMGs/Hankki  8. Bulgogi.jpg";
+import cheeseBuldakImg from "../assets/foodIMGs/Hankki  9. C heese-Buldak.jpg";
+import jjimDakImg from "../assets/foodIMGs/Hankki  18. Jjim-Dak.jpg";
+import japcheWithBeefImg from "../assets/foodIMGs/Hankki  13. Japche.jpg";
+import kimchijjigaeWithPorkTofuImg from "../assets/foodIMGs/Hankki  22. Kimchi-Jjigae und M12. kimchi jigae.jpg";
+export interface MenuVariant {
+  id: string; // 내부 식별자 (예: "pork-tofu")
+  labelKey: string; // 번역 키 (예: "menu.sub.porkTofu")
+  price?: number; // 기본 가격과 다를 경우만 설정
+  vegetarian: boolean;
+  halal: boolean;
+  allergens: string[];
+}
+
 export interface MenuItem {
   id: number;
-  nameKey: string;      // 번역을 위한 키 추가
-  descKey: string;      // 번역을 위한 키 추가
+  nameKey: string;
+  descKey: string;
   category: string;
   price: number;
   image: string;
   spiciness: number;
-  vegetarian: boolean;
-  halal: boolean;
-  allergens: string[];
-  includedKeys?: string[]; // 여러 개의 포함 사항 키 배열
-  extraKeys?: string[];    // 여러 개의 추가 옵션 키 배열
+  vegetarian: boolean; // 기본값
+  halal: boolean; // 기본값
+  allergens: string[]; // 기본값
+  includedKeys?: string[];
+  extraKeys?: string[];
+  variants?: MenuVariant[]; // 선택 옵션들
 }
 
 export const menuItems: MenuItem[] = [
+  /* ---------- STEW (전골 & 찌개) ---------- */
+  
+  // 1. Buade Jjigae
+  {
+    id: 1,
+    nameKey: "menu.items.budaeJjigae",
+    descKey: "menu.items.budaeJjigaeDesc",
+    category: "stew",
+    price: 29,
+    image: buddejjigaeImg,
+    spiciness: 2,
+    vegetarian: false,
+    halal: false,
+    allergens: ["A", "F", "N"],
+    includedKeys: ["menu.items.budaeJjigae.included"],
+    extraKeys: ["menu.items.budaeJjigae.extra"]
+  },
 
-/* ---------- STEW ---------- */
+  // 2. Bulgogi Jeongol
+  {
+    id: 2,
+    nameKey: "menu.items.bulgogijeongol",
+    descKey: "menu.items.bulgogijeongolDesc",
+    category: "stew",
+    price: 35,
+    image: bulgogiJeongolImg,
+    spiciness: 0,
+    vegetarian: false,
+    halal: true,
+    allergens: ["A", "F", "N"],
+    includedKeys: ["menu.items.bulgogijeongol.included"]
+  },
 
-{
-id:1,
-nameKey:"menu.items.budaeJjigae",
-descKey:"menu.items.budaeJjigaeDesc",
-category:"stew",
-price:29,
-image:buddejjigaeImg,
-spiciness:2,
-vegetarian:false,
-halal:false,
-allergens:["A","F","N"]
-},
+  // 3. Dakgalbi Jjim
+  {
+    id: 3,
+    nameKey: "menu.items.dakgalbi",
+    descKey: "menu.items.dakgalbiDesc",
+    category: "stew",
+    price: 30,
+    image: dakgalbiImg,
+    spiciness: 2,
+    vegetarian: false,
+    halal: false,
+    allergens: ["A", "F", "N"],
+    includedKeys: ["menu.items.dakgalbi.included"],
+    extraKeys: ["menu.items.dakgalbi.extra"]
+  },
 
-{
-id:2,
-nameKey:"menu.items.bulgogijeongol",
-descKey:"menu.items.bulgogijeongolDesc",
-category:"stew",
-price:35,
-image:bulgogiJeongolImg,
-spiciness:0,
-vegetarian:false,
-halal:true,
-allergens:["A","F", "N"]
-},
+  /* ---------- BULGOGI (불고기류) ---------- */
 
-{
-id:3,
-nameKey:"menu.items.dakgalbi",
-descKey:"menu.items.dakgalbiDesc",
-category:"stew",
-price:30,
-image:dakgalbiImg,
-spiciness:2,
-vegetarian:false,
-halal:false,
-allergens:["A","F","N"],
-includedKeys:["menu.items.dakgalbi.included"],
-extraKeys:["menu.items.dakgalbi.extra"]
-},
+  // 4. Gochujang Bulgogi
+  {
+    id: 4,
+    nameKey: "menu.items.gochujangBulgogi",
+    descKey: "menu.items.gochujangBulgogiDesc",
+    category: "bulgogi",
+    price: 17,
+    image: gochujangBulgogiImg,
+    spiciness: 2,
+    vegetarian: false,
+    halal: false,
+    allergens: ["A", "F", "N"]
+  },
 
-{
-id:11,
-name:"Doenjang Jjigae",
-category:"stew",
-price:13,
-spiciness:1,
-vegetarian:true,
-halal:true,
-allergens:["A","F","N"]
-},
+  // 5. Ganjang Doeji Bulgogi
+  {
+    id: 5,
+    nameKey: "menu.items.ganjangDoejiBulgogi",
+    descKey: "menu.items.ganjangDoejiBulgogiDesc",
+    category: "bulgogi",
+    price: 17,
+    image: ganjangDoejiBulgogiImg,
+    spiciness: 0,
+    vegetarian: false,
+    halal: true,
+    allergens: ["A", "F", "N"]
+  },
 
-{
-id:12,
-name:"Odeng Tang",
-category:"soup",
-price:13,
-spiciness:0,
-vegetarian:false,
-halal:false,
-allergens:["A","D","F","N","R"]
-},
+  // 6. Bulgogi
+  {
+    id: 6,
+    nameKey: "menu.items.Bulgogi",
+    descKey: "menu.items.BulgogiDesc",
+    category: "bulgogi",
+    price: 19,
+    image: ganjangDoejiBulgogiImg,
+    spiciness: 0,
+    vegetarian: false,
+    halal: true,
+    allergens: ["A", "F", "N"]
+  },
 
-{
-id:16,
-name:"Gomtang",
-category:"soup",
-price:17,
-spiciness:0,
-vegetarian:false,
-halal:true,
-allergens:["A","C","F","N"]
-},
+  /* ---------- CHICKEN (치킨류) ---------- */
 
-{
-id:17,
-name:"Yukgaejang",
-category:"soup",
-price:17,
-spiciness:2,
-vegetarian:false,
-halal:true,
-allergens:["A","C","F","N"]
-},
+  // 6. Cheese Buldak
+  {
+    id: 7,
+    nameKey: "menu.items.cheeseBuldak",
+    descKey: "menu.items.cheeseBuldakDesc",
+    category: "chicken",
+    price: 18,
+    image: cheeseBuldakImg,
+    spiciness: 3,
+    vegetarian: false,
+    halal: false,
+    allergens: ["A", "F", "N"]
+  },
 
-/* ---------- BULGOGI ---------- */
+  // 7. Jjim Dak (ID 중복 문제로 ID 8로 변경)
+  {
+    id: 8, // 중복된 ID 5번에서 8번으로 수정
+    nameKey: "menu.items.jjimDak",
+    descKey: "menu.items.jjimDakDesc",
+    category: "chicken",
+    price: 18,
+    image: jjimDakImg,
+    spiciness: 2,
+    vegetarian: false,
+    halal: false,
+    allergens: ["A", "F", "N"]
+  },
 
-{
-id:4,
-name:"Gochujang Bulgogi",
-category:"bulgogi",
-price:17,
-spiciness:2,
-vegetarian:false,
-halal:false,
-allergens:["A","F","N"]
-},
+  /* ---------- NOODLE (잡채 통합) ---------- */
 
-{
-id:5,
-name:"Ganjang Doeji Bulgogi",
-category:"bulgogi",
-price:17,
-spiciness:1,
-vegetarian:false,
-halal:false,
-allergens:["A","F","N"]
-},
+  // 8. Japche
+  {
+    id: 9,
+    nameKey: "menu.items.japchae",
+    descKey: "menu.items.japchaeDesc",
+    category: "noodle",
+    price: 14,
+    image: japcheWithBeefImg,
+    spiciness: 0,
+    vegetarian: false, // 기본값 (소고기 기준)
+    halal: false,
+    allergens: ["A", "F", "N"],
+    variants: [
+      { 
+        id: "beef", 
+        labelKey: "menu.items.japchae.sub.beef", 
+        vegetarian: false, 
+        halal: false, 
+        allergens: ["A", "F", "N"] 
+      },
+      { 
+        id: "mushroom", 
+        labelKey: "menu.items.japchae.sub.mushroom", 
+        vegetarian: true, // 버섯 선택 시 채식 활성화
+        halal: false, 
+        allergens: ["A", "F"]
+      }
+    ]
+  },
 
-{
-id:6,
-name:"Bulgogi",
-category:"bulgogi",
-price:19,
-spiciness:1,
-vegetarian:false,
-halal:true,
-allergens:["A","F","N"]
-},
+  /* ---------- SOUP (김치찌개 통합) ---------- */
 
-/* ---------- CHICKEN ---------- */
+  // 9. Kimchi Jjigae
+  {
+    id: 9,
+    nameKey: "menu.items.kimchiJjigae",
+    descKey: "menu.items.kimchiJjigaeDesc",
+    category: "soup",
+    price: 15,
+    image: kimchijjigaeWithPorkTofuImg,
+    spiciness: 2,
+    vegetarian: false,
+    halal: false,
+    allergens: ["A", "F", "N"],
+    variants: [
+      { id: "pork-tofu", labelKey: "menu.items.kimchiJjigae.sub.porkTofu", vegetarian: false, halal: false, allergens: ["A", "F", "N"] },
+      { id: "pork-only", labelKey: "menu.items.kimchiJjigae.sub.porkOnly", vegetarian: false, halal: false, allergens: ["A", "F", "N"] },
+      { id: "tofu-only", labelKey: "menu.items.kimchiJjigae.sub.tofuOnly", vegetarian: true, halal: false, allergens: ["F"] }
+    ]
+  },
 
-{
-id:7,
-name:"Cheese Buldak",
-category:"chicken",
-price:18,
-spiciness:3,
-vegetarian:false,
-halal:true,
-allergens:["A","F","N"]
-},
+  // 10. Doenjang Jjigae
+  {
+    id: 10,
+    nameKey: "menu.items.Doenjang-Jjigae",
+    descKey: "menu.items.Doenjang-JjigaeDesc",
+    category: "soup",
+    price: 15,
+    image: kimchijjigaeWithPorkTofuImg,
+    spiciness: 1,
+    vegetarian: false,
+    halal: false,
+    allergens: ["A", "F", "N"],
+    variants: [
+      { id: "veg", labelKey: "menu.items.Doenjang-Jjigae.sub.Vegetables", price: 13, vegetarian: true, halal: false, allergens: ["A", "F", "N"] },
+      { id: "seafood", labelKey: "menu.items.Doenjang-Jjigae.sub.Seafood", price: 15, vegetarian: false, halal: false, allergens: ["A", "D","F", "N", "R"] },
+    ]
+  }
 
-{
-id:8,
-name:"Jjim Dak",
-category:"chicken",
-price:18,
-spiciness:1,
-vegetarian:false,
-halal:true,
-allergens:["A","F","N"]
-},
-
-{
-id:25,
-name:"Boneless Korean Fried Chicken",
-category:"friedChicken",
-price:24,
-spiciness:1,
-vegetarian:false,
-halal:true,
-allergens:["A","F","N"]
-},
-
-{
-id:26,
-name:"Korean Fried Chicken",
-category:"friedChicken",
-price:24.5,
-spiciness:1,
-vegetarian:false,
-halal:true,
-allergens:["A","F","N"]
-},
-
-/* ---------- NOODLE ---------- */
-
-{
-id:9,
-name:"Japchae",
-category:"noodle",
-price:14,
-spiciness:0,
-vegetarian:true,
-halal:true,
-allergens:["A","F","N"]
-},
-
-/* ---------- BIBIMBAP ---------- */
-
-{
-id:13,
-name:"Dolsot Bibimbap",
-category:"bibimbap",
-price:13,
-spiciness:1,
-vegetarian:false,
-halal:true,
-allergens:["A","C","F","G","N"]
-},
-
-{
-id:14,
-name:"Dubu Bibimbap",
-category:"bibimbap",
-price:13,
-spiciness:1,
-vegetarian:true,
-halal:true,
-allergens:["A","C","F","G","N"]
-},
-
-{
-id:15,
-name:"Mushroom Bibimbap",
-category:"bibimbap",
-price:13,
-spiciness:1,
-vegetarian:true,
-halal:true,
-allergens:["A","C","F","G","N"]
-},
-
-/* ---------- TTEOKBOKKI ---------- */
-
-{
-id:18,
-name:"Ddeokbokki",
-category:"streetfood",
-price:15,
-spiciness:3,
-vegetarian:false,
-halal:false,
-allergens:["A","D","F","N"]
-},
-
-{
-id:19,
-name:"Cheese Ddeokbokki",
-category:"streetfood",
-price:17,
-spiciness:3,
-vegetarian:false,
-halal:false,
-allergens:["A","D","F","G","N"]
-},
-
-{
-id:20,
-name:"Jjajang Ddeokbokki",
-category:"streetfood",
-price:17,
-spiciness:2,
-vegetarian:false,
-halal:false,
-allergens:["A","C","D","F","G","N"]
-},
-
-/* ---------- PANCAKES ---------- */
-
-{
-id:23,
-name:"Pajeon",
-category:"pancake",
-price:10.9,
-spiciness:0,
-vegetarian:true,
-halal:true,
-allergens:["A","D","F","R"]
-},
-
-{
-id:22,
-name:"Kimchi Jeon",
-category:"pancake",
-price:10.9,
-spiciness:1,
-vegetarian:false,
-halal:false,
-allergens:["A","D","F","R"]
-},
-
-/* ---------- SIDE ---------- */
-
-{
-id:21,
-name:"Gun Mandu",
-category:"side",
-price:6,
-spiciness:0,
-vegetarian:true,
-halal:true,
-allergens:["A","F","N"]
-},
-
-{
-id:24,
-name:"Kimchi",
-category:"side",
-price:3.5,
-spiciness:1,
-vegetarian:true,
-halal:true,
-allergens:["A","D","F","R"]
-}
-
-]
+];

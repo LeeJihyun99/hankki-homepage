@@ -49,6 +49,17 @@ const SpicinessTags = ({ count, size = "sm" }: { count: number; size?: "sm" | "m
 function DetailModal({ item, onClose }: { item: MenuItem; onClose: () => void }) {
   const { t } = useLanguage();
 
+  // 1. 선택된 variant 상태 관리 (옵션이 있으면 첫 번째 옵션을 기본값으로, 없으면 null)
+  const [selectedVariant, setSelectedVariant] = useState(
+    item.variants && item.variants.length > 0 ? item.variants[0] : null
+  );
+
+  // 2. 현재 표시할 데이터 결정 (variant가 선택되었다면 해당 정보를, 아니면 기본 정보를 사용)
+  const isVeg = selectedVariant ? selectedVariant.vegetarian : item.vegetarian;
+  const isHalal = selectedVariant ? selectedVariant.halal : item.halal;
+  const currentAllergens = selectedVariant ? selectedVariant.allergens : item.allergens;
+  const currentPrice = selectedVariant?.price || item.price;
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -63,49 +74,114 @@ function DetailModal({ item, onClose }: { item: MenuItem; onClose: () => void })
         exit={{ x: window.innerWidth >= 768 ? "100%" : 0, y: window.innerWidth >= 768 ? 0 : "100%" }}
         transition={{ type: "spring", damping: 30, stiffness: 300 }}
         onClick={(e) => e.stopPropagation()}
-        className="bg-white text-black w-full md:w-[480px] h-[85vh] md:h-screen rounded-t-[2.5rem] md:rounded-t-none md:rounded-l-[2.5rem] shadow-2xl overflow-y-auto no-scrollbar relative flex flex-col"
+        className="bg-white text-black w-full md:w-[480px] h-[85vh] md:h-screen shadow-2xl overflow-y-auto no-scrollbar relative flex flex-col"
       >
-        <button onClick={onClose} className="absolute top-4 right-6 p-2 bg-black/10 hover:bg-black/20 rounded-lg z-30 transition-colors text-white">
+        {/* 닫기 버튼 */}
+        <button 
+          onClick={onClose} 
+          className="absolute top-4 right-6 p-2 bg-black/10 hover:bg-black/20 rounded-lg z-30 transition-colors text-white"
+        >
           <X size={20} />
         </button>
 
-        {/* 🖼 이미지 영역 비율 조정 (높이 감소) */}
+        {/* 🖼 이미지 영역 */}
         <div className="w-full shrink-0 overflow-hidden bg-gray-100">
-          {/* aspect-square나 aspect-[4/3] 대신 더 납작한 aspect-[21/10] 적용 */}
           <div className="aspect-[21/10] w-full">
             <ImageWithFallback src={item.image} alt={t(item.nameKey)} className="w-full h-full object-cover" />
           </div>
         </div>
 
+        {/* 📝 상세 정보 콘텐츠 영역 */}
         <div className="p-8 md:p-12 flex-grow flex flex-col">
+          
+          {/* 헤더: 이름 & 가격 */}
           <div className="flex justify-between items-start gap-4 mb-6">
             <div>
               <span className="text-[10px] font-black text-black/30 uppercase tracking-[0.2em] mb-1 block">Selected Item</span>
               <h4 className="text-3xl md:text-4xl font-black tracking-tighter leading-none">{t(item.nameKey)}</h4>
             </div>
-            <p className="text-2xl font-mono font-black text-black">€{item.price.toFixed(2)}</p>
+            <p className="text-2xl font-mono font-black text-black">€{currentPrice.toFixed(2)}</p>
           </div>
 
+          {/* ✨ Variant 선택 섹션 (잡채/김치찌개 등 옵션이 있을 때만 노출) */}
+          {item.variants && item.variants.length > 0 && (
+            <div className="mb-8">
+              <h5 className="text-[10px] font-black text-black/20 uppercase tracking-[0.2em] mb-4">Select Option</h5>
+              <div className="flex flex-wrap gap-2 p-1 bg-black/[0.03] rounded-2xl">
+                {item.variants.map((variant) => (
+                  <button
+                    key={variant.id}
+                    onClick={() => setSelectedVariant(variant)}
+                    className={`flex-1 py-3 px-4 rounded-xl text-[10px] font-black transition-all uppercase tracking-tighter ${
+                      selectedVariant?.id === variant.id
+                        ? "bg-white text-black shadow-sm ring-1 ring-black/5"
+                        : "text-black/40 hover:text-black"
+                    }`}
+                  >
+                    {t(variant.labelKey)}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* 특성 태그 (선택된 옵션에 따라 실시간 반영) */}
           <div className="flex flex-wrap gap-2 mb-8">
-            {item.halal && <FeatureTag label="Halal" colorClass="bg-blue-50 border-blue-100 text-blue-600" size="md" />}
-            {item.vegetarian && <FeatureTag icon={Leaf} label="Vegetarian" colorClass="bg-green-50 border-green-100 text-green-600" size="md" />}
+            {isHalal && <FeatureTag label="Halal" colorClass="bg-blue-50 border-blue-100 text-blue-600" size="md" />}
+            {isVeg && <FeatureTag icon={Leaf} label="Vegetarian" colorClass="bg-green-50 border-green-100 text-green-600" size="md" />}
             {item.spiciness > 0 && <SpicinessTags count={item.spiciness} size="md" />}
           </div>
 
           <div className="space-y-8 flex-grow">
-            <p className="text-black/60 text-sm md:text-base leading-relaxed border-l-2 border-black/10 pl-6">{t(item.descKey)}</p>
+            {/* 메뉴 설명 */}
+            <p className="text-black/60 text-sm md:text-base leading-relaxed border-l-2 border-black/10 pl-6">
+              {t(item.descKey)}
+            </p>
             
-            {item.allergens.length > 0 && (
-              <div className="pt-8 border-t border-black/5 mt-auto">
+            {/* 🍱 Included & Extras Section */}
+            {((item.includedKeys?.length ?? 0) > 0 || (item.extraKeys?.length ?? 0) > 0) && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10 py-10 border-y border-black/5 my-4">
+                {item.includedKeys && item.includedKeys.length > 0 && (
+                  <div className="flex flex-col">
+                    <h5 className="text-[10px] font-black text-black/20 uppercase tracking-[0.2em] mb-5">{t("menu.included")}</h5>
+                    <ul className="space-y-4">
+                      {item.includedKeys.map((key) => (
+                        <li key={key} className="flex items-start gap-3 group">
+                          <div className="w-1 h-1 rounded-full bg-black/20 mt-2 shrink-0 group-hover:bg-black transition-colors" />
+                          <span className="text-sm font-bold text-black/70 leading-tight">{t(key)}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {item.extraKeys && item.extraKeys.length > 0 && (
+                  <div className="flex flex-col">
+                    <h5 className="text-[10px] font-black text-black/20 uppercase tracking-[0.2em] mb-5">{t("menu.extra")}</h5>
+                    <ul className="space-y-4">
+                      {item.extraKeys.map((key) => (
+                        <li key={key} className="flex items-start gap-3 group">
+                          <div className="w-1 h-1 rounded-full bg-black/20 mt-2 shrink-0 group-hover:bg-black transition-colors" />
+                          <span className="text-sm font-bold text-black/70 leading-tight">{t(key)}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* ⚠️ Allergen Information (선택된 옵션에 따라 실시간 반영) */}
+            {currentAllergens.length > 0 && (
+              <div className="pt-8 mt-auto">
                 <h5 className="text-[10px] font-black text-black/20 uppercase tracking-[0.2em] mb-5">Allergen Information</h5>
                 <div className="flex flex-wrap gap-4">
-                  {item.allergens.map((code) => {
+                  {currentAllergens.map((code) => {
                     const allergen = allergensMap[code];
                     const Icon = allergen?.icon;
                     return (
-                      <div key={code} className="flex flex-col items-center gap-1.5">
-                        <div className="w-10 h-10 rounded-xl bg-black/[0.03] flex items-center justify-center border border-black/5">
-                          {Icon ? <Icon size={18} className="text-black/40" /> : <span className="text-[10px] font-bold text-black/40">{code}</span>}
+                      <div key={code} className="flex flex-col items-center gap-1.5 group">
+                        <div className="w-10 h-10 rounded-xl bg-black/[0.03] flex items-center justify-center border border-black/5 group-hover:border-black/20 transition-colors">
+                          {Icon ? <Icon size={18} className="text-black/40 group-hover:text-black" /> : <span className="text-[10px] font-bold text-black/40">{code}</span>}
                         </div>
                         <span className="text-[9px] font-black text-black/30 uppercase">{code}</span>
                       </div>
@@ -172,9 +248,10 @@ export function Menu() {
               </button>
             ))}
           </div>
-
+          
+          {/* Filter Options */}
           <div className="flex justify-center items-center gap-4">
-            {/* 🆕 드롭다운 이쁘게 수정 & 글자 안보임 해결 */}
+            {/* Dietary Filter */}
             <div className="relative">
               <select 
                 value={dietaryFilter} 
@@ -188,6 +265,7 @@ export function Menu() {
               <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-white/30" />
             </div>
 
+            {/* Spiciness Filter */}
             <div className="relative">
               <select 
                 value={spicinessFilter} 
@@ -203,6 +281,7 @@ export function Menu() {
               <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-white/30" />
             </div>
 
+            {/* Order Guide Button */}
             {selectedCategory === "friedChicken" && (
               <button onClick={() => setIsOrderGuideOpen(true)} className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-5 py-3 rounded-xl transition-all shadow-lg shadow-orange-500/20">
                 <Info size={16} />
@@ -236,7 +315,7 @@ export function Menu() {
                     {item.spiciness > 0 && <SpicinessTags count={item.spiciness} />}
                   </div>
                   <div className="flex justify-between items-end mt-4">
-                    <span className="text-sm font-black text-white/90 tracking-tighter">€{item.price.toFixed(2)}</span>
+                    {/* <span className="text-sm font-black text-white/90 tracking-tighter">€{item.price.toFixed(2)}</span> */}
                     <span className="text-[10px] font-black text-white/20 uppercase tracking-widest group-hover:text-white transition-colors">Details +</span>
                   </div>
                 </div>
@@ -331,6 +410,7 @@ export function Menu() {
         )}
       </AnimatePresence>
 
+      {/* Detail Modal */}
       <AnimatePresence>
         {selectedDetailItem && <DetailModal item={selectedDetailItem} onClose={() => setSelectedDetailItem(null)} />}
       </AnimatePresence>
