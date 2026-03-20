@@ -142,9 +142,9 @@ export const menuItems: MenuItem[] = [
     allergens: ["A", "F", "N"]
   },
 
-  // 7. Jjim Dak (ID 중복 문제로 ID 8로 변경)
+  // 7. Jjim Dak
   {
-    id: 8, // 중복된 ID 5번에서 8번으로 수정
+    id: 8, 
     nameKey: "menu.items.jjimDak",
     descKey: "menu.items.jjimDakDesc",
     category: "chicken",
@@ -225,6 +225,19 @@ export const menuItems: MenuItem[] = [
       { id: "veg", labelKey: "menu.items.Doenjang-Jjigae.sub.Vegetables", price: 13, vegetarian: true, halal: false, allergens: ["A", "F", "N"] },
       { id: "seafood", labelKey: "menu.items.Doenjang-Jjigae.sub.Seafood", price: 15, vegetarian: false, halal: false, allergens: ["A", "D","F", "N", "R"] },
     ]
-  }
+  },
+
+    {
+    id: 11, 
+    nameKey: "menu.items.Odeng-Tang",
+    descKey: "menu.items.Odeng-TangDesc",
+    category: "soup",
+    price: 13,
+    image: buddejjigaeImg,
+    spiciness: 0,
+    vegetarian: false,
+    halal: false,
+    allergens: ["A", "D", "F", "N", "R"]
+  },
 
 ];

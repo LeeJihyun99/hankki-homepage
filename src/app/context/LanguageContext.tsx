@@ -106,6 +106,9 @@ const translations = {
     "menu.items.Doenjang-JjigaeDesc": "Stew with aged soybean paste, tofu and vegetables",
     "menu.items.Doenjang-Jjigae.sub.Vegetables": "Vegetables",
     "menu.items.Doenjang-Jjigae.sub.Seafood": "Seafood",
+    "menu.items.Odeng-Tang": "Odeng Tang",
+    "menu.items.Odeng-TangDesc": "Warm soup with fish cakes and vegetables in aclear, savory broth",
+
 
 
     "menu.findUs": "Find us",
@@ -276,7 +279,8 @@ const translations = {
     "menu.items.Doenjang-JjigaeDesc": "Eintopf mit fermentierter Sojabohnenpaste, Tofu und Gemüse",
     "menu.items.Doenjang-Jjigae.sub.Vegetables": "Gemüse",
     "menu.items.Doenjang-Jjigae.sub.Seafood": "Meeresfrüchte",
-    
+    "menu.items.Odeng-Tang": "Odeng Tang",
+    "menu.items.Odeng-TangDesc": "Warme Suppe mit Fischkuchen und Gemüse in einer klaren, herzhaften Brühe",
 
 
 
@@ -448,6 +452,8 @@ const translations = {
     "menu.items.Doenjang-JjigaeDesc": "된장, 두부, 야채가 들어간 찌개",
     "menu.items.Doenjang-Jjigae.sub.Vegetables": "야채",
     "menu.items.Doenjang-Jjigae.sub.Seafood": "해산물",
+    "menu.items.Odeng-Tang": "오뎅탕",
+    "menu.items.Odeng-TangDesc": "맑고 고소한 국물에 어묵과 야채가 들어간 따뜻한 국물",
 
     "menu.findUs": "찾아오시는 길",
     "menu.filters": "필터",
