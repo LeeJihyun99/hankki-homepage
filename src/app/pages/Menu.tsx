@@ -12,7 +12,7 @@ import foodIMg from "../../assets/foodIMGs/Hankki_cover_2.jpg";
 import { menuItems, MenuItem } from "../../data/menuItems";
 import { allergensMap } from "../../data/allergens";
 
-const mainCategories = ["all", "stew", "soup", "bulgogi", "chicken", "friedChicken", "noodle", "bibimbap", "streetfood", "pancake", "side"];
+const mainCategories = ["all", "stew", "soup", "bulgogi", "chicken", "friedChicken", "noodle", "bibimbap", "streetfood", "pancake", "side", "extra"];
 
 const spicinessDesc: Record<number, string> = {
   1: "Mild",
@@ -325,7 +325,7 @@ export function Menu() {
         </div>
       </section>
 
-      {/* --- Centralized How to Order Modal (Only Orange Point Here) --- */}
+      {/* --- Centralized How to Order Modal */}
       <AnimatePresence>
         {isOrderGuideOpen && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
@@ -398,12 +398,6 @@ export function Menu() {
                     </div>
                   ))}
                 </div>
-              </div>
-
-              <div className="relative z-10 p-8 bg-[#0f0f0f] border-t border-white/5">
-                <button onClick={() => setIsOrderGuideOpen(false)} className="w-full bg-white text-black py-4 rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] hover:bg-orange-500 hover:text-white transition-all duration-300 shadow-xl">
-                  {t("menu.guide.close") || "Close Guide"}
-                </button>
               </div>
             </motion.div>
           </div>
