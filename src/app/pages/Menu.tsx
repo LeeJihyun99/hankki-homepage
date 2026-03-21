@@ -13,26 +13,14 @@ import { allergensMap } from "../../data/allergens";
 const mainCategories = ["all", "stew", "soup", "bulgogi", "chicken", "friedChicken", "noodle", "bibimbap", "streetfood", "pancake", "side", "extra"];
 const spicinessDesc: Record<number, string> = { 1: "Mild", 2: "Medium", 3: "Hot" };
 
-// PDF 기반 맛 설명 데이터
-const flavorDescriptions: Record<string, { en: string; de: string; ko: string }> = {
-  "Original": {
-    en: "Crispy and golden-brown traditional Korean fried chicken.",
-    de: "Knuspriges, goldbraunes traditionelles koreanisches Brathähnchen.",
-    ko: "겉바속촉의 정석, 전통적인 한국식 후라이드 치킨."
-  },
-  "Yangnyeom": {
-    en: "Sweet and spicy sauce with a hint of garlic and cinnamon.",
-    de: "Süß-scharfe Sauce mit einer Note von Knoblauch und Zimt.",
-    ko: "달콤 매콤한 소스에 마늘과 계피향이 어우러진 한국 전통 양념 치킨."
-  },
-  "Ganjang": {
-    en: "Savory soy sauce glaze with a deep, rich umami flavor.",
-    de: "Herzhafte Sojasaucen-Glasur mit tiefem Umami-Geschmack.",
-    ko: "깊고 진한 풍미의 간장 소스를 입힌 짭조름한 치킨."
-  }
+// PDF 기반 맛 설명 데이터 (JSON 키와 매칭)
+const flavorKeys: Record<string, string> = {
+  "Original": "menu.flavor.Original.desc",
+  "Yangnyeom": "menu.flavor.Yangnyeom.desc",
+  "Ganjang": "menu.flavor.Ganjang.desc"
 };
 
-// --- 알러지 팝업 컴포넌트 ---
+// --- 알러지 아이콘 컴포넌트 ---
 const AllergenIcon = ({ code }: { code: string }) => {
   const { t } = useLanguage();
   const [isHovered, setIsHovered] = useState(false);
@@ -40,7 +28,7 @@ const AllergenIcon = ({ code }: { code: string }) => {
   const Icon = allergen?.icon;
 
   return (
-    <div className="relative flex flex-col items-center gap-1 group">
+    <div className="relative flex flex-col items-center gap-1 group relative">
       <div 
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -66,7 +54,7 @@ const AllergenIcon = ({ code }: { code: string }) => {
           >
             <p className="text-[10px] font-black text-black flex items-center gap-2">
               <span className="opacity-30">{code}</span>
-              <span>{allergen?.nameKey ? t(allergen.nameKey) : code}</span>
+              <span>{allergen ? t(allergen.nameKey) : code}</span>
             </p>
             <div className="absolute right-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-r-white" />
           </motion.div>
@@ -99,8 +87,6 @@ const SpicinessTags = ({ count, size = "sm" }: { count: number; size?: "sm" | "m
 function DetailModal({ item, onClose }: { item: MenuItem; onClose: () => void }) {
   const { t } = useLanguage();
   const [selectedVariant, setSelectedVariant] = useState(item.variants && item.variants.length > 0 ? item.variants[0] : null);
-  
-  // 개별 버튼의 호버 상태를 추적하기 위한 state
   const [hoveredVariantId, setHoveredVariantId] = useState<string | null>(null);
 
   const isVeg = selectedVariant ? selectedVariant.vegetarian : item.vegetarian;
@@ -109,6 +95,9 @@ function DetailModal({ item, onClose }: { item: MenuItem; onClose: () => void })
   const currentPrice = selectedVariant?.price || item.price;
   const currentImage = selectedVariant?.image || item.image;
   const currentSpiciness = selectedVariant ? (selectedVariant.spiciness ?? item.spiciness) : item.spiciness;
+
+  // Fried Chicken 카테고리인지 확인
+  const isFriedChicken = item.category === "friedChicken";
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="fixed inset-0 bg-black/80 z-[100] flex justify-end items-end md:items-stretch backdrop-blur-md">
@@ -137,50 +126,45 @@ function DetailModal({ item, onClose }: { item: MenuItem; onClose: () => void })
           </div>
 
           {item.variants && item.variants.length > 0 && (
-                      <div>
-                        <h5 className="text-[9px] font-black text-black/20 uppercase tracking-widest mb-2">Select Option</h5>
-                        <div className="flex flex-wrap gap-1.5 p-1 bg-black/[0.03] rounded-xl relative">
-                          {item.variants.map((variant) => {
-                            // variant.labelKey가 "menu.variants.Original" 형태일 때 "Original"만 추출
-                            const flavorName = variant.labelKey.split('.').pop() || "";
-                            
-                            return (
-                              <div key={variant.id} className="flex-1 relative">
-                                <button
-                                  onMouseEnter={() => setHoveredVariantId(variant.id)}
-                                  onMouseLeave={() => setHoveredVariantId(null)}
-                                  onClick={() => setSelectedVariant(variant)}
-                                  className={`w-full py-2 px-3 rounded-lg text-[9px] font-black transition-all uppercase tracking-tighter ${
-                                    selectedVariant?.id === variant.id 
-                                    ? "bg-white text-black shadow-sm ring-1 ring-black/5" 
-                                    : "text-black/40 hover:text-black"
-                                  }`}
-                                >
-                                  {t(variant.labelKey)}
-                                </button>
+            <div>
+              <h5 className="text-[9px] font-black text-black/20 uppercase tracking-widest mb-2">Select Option</h5>
+              <div className="flex flex-wrap gap-1.5 p-1 bg-black/[0.03] rounded-xl relative">
+                {item.variants.map((variant) => {
+                  // variant.labelKey가 "menu.variants.Original" 형태일 때 "Original"만 추출
+                  const flavorName = variant.labelKey.split('.').pop() || "";
+                  const hasDescription = flavorKeys[flavorName];
 
-                                {/* 호버 시 나타나는 맛 설명 팝업 */}
-                                <AnimatePresence>
-                                  {hoveredVariantId === variant.id && (
-                                    <motion.div
-                                      initial={{ opacity: 0, y: 10 }}
-                                      animate={{ opacity: 1, y: 0 }}
-                                      exit={{ opacity: 0, y: 10 }}
-                                      className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 p-3 bg-white shadow-2xl border border-black/5 rounded-xl z-[120] w-48 pointer-events-none"
-                                    >
-                                      <p className="text-[10px] font-bold text-black leading-snug">
-                                        {/* JSON에서 flavorName에 맞는 설명을 가져옴 */}
-                                        {t(`menu.flavor.${flavorName}.desc`)}
-                                      </p>
-                                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-white" />
-                                    </motion.div>
-                                  )}
-                                </AnimatePresence>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
+                  return (
+                    <div key={variant.id} className="flex-1 relative">
+                      <button
+                        // Fried Chicken일 때만 호버 상태 변경
+                        onMouseEnter={() => isFriedChicken && setHoveredVariantId(variant.id)}
+                        onMouseLeave={() => isFriedChicken && setHoveredVariantId(null)}
+                        onClick={() => setSelectedVariant(variant)}
+                        className={`w-full py-2 px-3 rounded-lg text-[9px] font-black transition-all uppercase tracking-tighter ${selectedVariant?.id === variant.id ? "bg-white text-black shadow-sm ring-1 ring-black/5" : "text-black/40 hover:text-black"}`}
+                      >
+                        {t(variant.labelKey)}
+                      </button>
+
+                      {/* Fried Chicken이고 맛 설명이 있을 때만 팝업 표시 */}
+                      <AnimatePresence>
+                        {isFriedChicken && hoveredVariantId === variant.id && hasDescription && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}
+                            className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 p-3 bg-white shadow-2xl border border-black/5 rounded-xl z-[120] w-48 pointer-events-none"
+                          >
+                            <p className="text-[10px] font-bold text-black leading-snug">
+                              {t(flavorKeys[flavorName])}
+                            </p>
+                            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-white" />
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           )}
 
           <div className="flex flex-wrap gap-1.5">
@@ -191,6 +175,7 @@ function DetailModal({ item, onClose }: { item: MenuItem; onClose: () => void })
 
           <p className="text-black/60 text-xs leading-relaxed border-l-2 border-black/10 pl-4">{t(item.descKey)}</p>
 
+          {/* 🍗 핑킹 현상 안내 (보내주신 키 그대로 적용) */}
           {item.category === "friedChicken" && (
             <div className="p-4 bg-orange-50/50 rounded-xl border border-orange-100 mt-2">
               <p className="text-[10px] font-bold text-orange-900/80 leading-tight">
@@ -235,7 +220,7 @@ export function Menu() {
   });
 
   return (
-    <div className="bg-black text-white min-h-screen">
+    <div className="bg-black text-white min-h-screen font-sans">
       <section className="relative h-[40vh] flex items-center justify-center overflow-hidden">
         <ImageWithFallback src={foodIMg} alt="Menu" className="absolute inset-0 w-full h-full object-cover opacity-60" />
         <h1 className="relative text-5xl font-black z-10">{t("menu.title")}</h1>
@@ -314,6 +299,7 @@ export function Menu() {
         </div>
       </section>
 
+      {/* --- Order Guide Modal (디자인 유지 + 문구 추가) --- */}
       <AnimatePresence>
         {isOrderGuideOpen && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
@@ -332,6 +318,7 @@ export function Menu() {
 
               <div className="relative z-10 overflow-y-auto px-8 py-4 no-scrollbar flex-grow">
                 <div className="grid gap-4 mb-6">
+                  {/* Step 1 */}
                   <div className="group bg-white/[0.03] border border-white/5 p-5 rounded-[1.5rem]">
                     <h4 className="text-orange-500 text-[10px] font-black uppercase tracking-widest mb-2">Step 1. Style</h4>
                     <p className="text-white/80 text-sm font-medium leading-relaxed mb-4">Choose between With Bone or Boneless.</p>
@@ -340,7 +327,7 @@ export function Menu() {
                       <div className="flex-1 bg-white/5 rounded-2xl p-4 border border-white/10 flex flex-col items-center gap-2"><Utensils size={20} className="text-orange-500/70" /><span className="text-[10px] text-white font-black uppercase">Boneless</span></div>
                     </div>
                   </div>
-                  
+                  {/* Step 2 */}
                   <div className="group bg-white/[0.03] border border-white/5 p-5 rounded-[1.5rem]">
                     <h4 className="text-orange-500 text-[10px] font-black uppercase tracking-widest mb-2">Step 2. Size</h4>
                     <p className="text-white/80 text-sm font-medium leading-relaxed mb-4">Select Medium (M) or Large (L).</p>
@@ -353,24 +340,29 @@ export function Menu() {
                       <span className="text-[10px] font-black uppercase leading-none">Boneless is only available in L size.</span>
                     </div>
                   </div>
-
+                  {/* Step 3 - 맛 소개 섹션 추가 */}
                   <div className="group bg-white/[0.03] border border-white/5 p-5 rounded-[1.5rem]">
                     <h4 className="text-orange-500 text-[10px] font-black uppercase tracking-widest mb-2">Step 3. Flavor</h4>
                     <p className="text-white/80 text-sm font-medium leading-relaxed mb-4">Choose your favorite sauce.</p>
                     
                     <div className="grid grid-cols-3 gap-2 mb-4">
-                      {Object.entries(flavorDescriptions).map(([name, desc]) => (
-                        <div key={name} className="bg-white/5 rounded-2xl p-3 border border-white/10 text-center">
+                      {["Original", "Yangnyeom", "Ganjang"].map((name) => (
+                        <div key={name} className="bg-white/5 rounded-2xl p-3 border border-white/10 text-center relative group/flavor">
                           <div className={`w-2 h-2 rounded-full mx-auto mb-2 ${name === "Original" ? "bg-yellow-500" : name === "Yangnyeom" ? "bg-red-500" : "bg-amber-900"}`} />
-                          <span className="text-[9px] text-white font-black uppercase block mb-1">{name}</span>
-                          <p className="text-[8px] text-white/40 leading-tight">{desc[language as 'en'|'de'|'ko']}</p>
+                          <span className="text-[9px] text-white font-black uppercase block">{name}</span>
+                          
+                          {/* 가이드 내 맛 설명 툴팁 (호버 시) */}
+                          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 p-2 bg-white rounded-lg shadow-xl w-32 opacity-0 group-hover/flavor:opacity-100 transition-opacity pointer-events-none z-10">
+                            <p className="text-[8px] text-black font-medium leading-tight">{t(flavorKeys[name])}</p>
+                            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-white" />
+                          </div>
                         </div>
                       ))}
                     </div>
 
                     <div className="flex gap-2">
-                      <div className="flex-1 bg-white/5 rounded-2xl p-4 border border-white/10 text-center"><span className="text-[10px] text-white font-black uppercase">Whole</span></div>
-                      <div className="flex-1 bg-orange-500/10 rounded-2xl p-4 border border-orange-500/30 text-center"><span className="text-[10px] text-orange-400 font-black uppercase tracking-tighter italic leading-none block">Half & Half available!</span></div>
+                      <div className="flex-1 bg-white/5 rounded-2xl p-4 border border-white/10 text-center"><div className="w-4 h-4 rounded-full bg-orange-500/30 border border-orange-500/50 mx-auto mb-2" /><span className="text-[10px] text-white font-black uppercase">Whole</span></div>
+                      <div className="flex-1 bg-orange-500/10 rounded-2xl p-4 border border-orange-500/30 text-center"><div className="flex gap-1 justify-center mb-2"><div className="w-4 h-4 rounded-full bg-orange-500" /><div className="w-4 h-4 rounded-full bg-white/20" /></div><span className="text-[10px] text-orange-400 font-black uppercase">Half & Half</span></div>
                     </div>
                   </div>
                 </div>
