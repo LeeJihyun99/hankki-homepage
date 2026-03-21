@@ -221,29 +221,62 @@ export function Menu() {
 
   return (
     <div className="bg-black text-white min-h-screen font-sans">
-      <section className="relative h-[40vh] flex items-center justify-center overflow-hidden">
-        <ImageWithFallback src={foodIMg} alt="Menu" className="absolute inset-0 w-full h-full object-cover opacity-60" />
-        <h1 className="relative text-5xl font-black z-10">{t("menu.title")}</h1>
-      </section>
+
+        {/* Hero section */}
+        <section className="relative h-[50vh] flex items-center justify-center">
+          <div className="absolute inset-0">
+            <ImageWithFallback src={foodIMg} alt="Menu Background" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black"></div>
+          </div>
+
+          {/* 텍스트와 버튼을 감싸는 컨테이너 */}
+          <motion.div className="relative text-center z-10 px-4 flex flex-col items-center gap-8">
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tighter"
+            >
+              {t("menu.title")}
+            </motion.h1>
+
+            {/* PDF 다운로드 버튼: Home 스타일 애니메이션 적용 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <a
+                href={menuPDF}
+                download="Hankki_Menu.pdf"
+                className="inline-flex items-center gap-3 bg-white text-black px-8 py-3.5 rounded-full font-black uppercase tracking-widest text-[11px] hover:bg-white/90 transition-all duration-300 shadow-2xl transform hover:scale-105 active:scale-95"
+              >
+                <Download size={18} />
+                {t("menu.downloadPDF")}
+              </a>
+            </motion.div>
+          </motion.div>
+        </section>
+
 
       <nav className="sticky top-0 bg-black/90 backdrop-blur-2xl z-40 border-b border-white/5 py-4">
-        <div className="max-w-6xl mx-auto px-4 space-y-4">
-          <div className="flex flex-wrap justify-center gap-1.5">
+        <div className="max-w-6xl mx-auto px-4 space-y-6">
+          <div className="flex flex-wrap justify-center gap-4">
             {mainCategories.map((cat) => (
-              <button key={cat} onClick={() => setSelectedCategory(cat)} className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest border transition-all ${selectedCategory === cat ? "bg-white text-black border-white" : "bg-white/5 text-white/40 border-white/10 hover:border-white/20"}`}>
+              <button key={cat} onClick={() => setSelectedCategory(cat)} className={`px-5 py-3 rounded-xl text-[12px] font-black tracking-widest border transition-all ${selectedCategory === cat ? "bg-white text-black border-white" : "bg-white/5 text-white/40 border-white/10 hover:border-white/20"}`}>
                 {t(`menu.categories.${cat}`) || cat}
               </button>
             ))}
           </div>
           
           <div className="flex justify-center items-center gap-3">
-            <select value={dietaryFilter} onChange={(e) => setDietaryFilter(e.target.value)} className="bg-[#111] border border-white/10 px-4 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest outline-none">
+            <select value={dietaryFilter} onChange={(e) => setDietaryFilter(e.target.value)} className="bg-[#111] border border-white/10 px-5 py-3 rounded-xl text-[12px] font-black tracking-widest outline-none">
               <option value="all">Dietary: All</option>
               <option value="veg">Vegetarian</option>
               <option value="halal">Halal Only</option>
             </select>
 
-            <select value={spicinessFilter} onChange={(e) => setSpicinessFilter(e.target.value)} className="bg-[#111] border border-white/10 px-4 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest outline-none">
+            <select value={spicinessFilter} onChange={(e) => setSpicinessFilter(e.target.value)} className="bg-[#111] border border-white/10 px-5 py-3 rounded-xl text-[12px] font-black tracking-widest outline-none">
               <option value="all">Spice: Any</option>
               <option value="0">Non-Spicy</option>
               <option value="1">Mild 🔥</option>
@@ -256,7 +289,7 @@ export function Menu() {
                 <button 
                   onMouseEnter={() => setIsGuideHovered(true)} onMouseLeave={() => setIsGuideHovered(false)}
                   onClick={() => setIsOrderGuideOpen(true)} 
-                  className="bg-orange-500 hover:bg-orange-600 text-white p-2.5 rounded-xl transition-all shadow-lg"
+                  className="bg-orange-500 hover:bg-orange-600 text-white p-3 rounded-xl transition-all shadow-lg"
                 >
                   <Info size={16} />
                 </button>
