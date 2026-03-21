@@ -108,7 +108,7 @@ const translations = {
     "menu.items.Doenjang-Jjigae.sub.Vegetables": "Vegetables",
     "menu.items.Doenjang-Jjigae.sub.Seafood": "Seafood",
     "menu.items.Odeng-Tang": "Odeng Tang",
-    "menu.items.Odeng-TangDesc": "Warm soup with fish cakes and vegetables in aclear, savory broth",
+    "menu.items.Odeng-TangDesc": "Warm soup with fish cakes and vegetables in a clear, savory broth",
     "menu.items.Dolsot-Bibimbap": "Dolsot Bibimbap",
     "menu.items.Dolsot-BibimbapDesc": "Rice with beef and a variety of vegetables in a hot stone pot",
     "menu.items.Dubu-Bibimbap": "Dubu Bibimbap",
@@ -147,6 +147,23 @@ const translations = {
     "menu.items.ExtraCheese": "Extra Cheese",
     "menu.items.ExtraPickledRadish": "Extra Pickled Radish",
     "menu.items.ExtraSideDishes": "Extra Side Dishes",
+
+    // fried chicken
+    "menu.items.friedChicken.included":"Pickled radish and a side salad",
+    "menu.items.Chicken-With-Bone-half": "Korean Fried Chicken with bones (M)",
+    "menu.friedchicken.m.sub.Original":"Original(without Sauce)",
+    "menu.friedchicken.m.sub.Ganjang":"Ganjang (spicy soy sauce with chili)",
+    "menu.friedchicken.m.sub.Yangnyeom":"Yangnyeom(weet and spicy)",
+    "menu.items.Chicken-With-Bone-L": "Korean Fried Chicken with bones (L)",
+    "menu.friedChicken.l.sub.Original":"Original(without Sauce)",
+    "menu.friedChicken.l.sub.Ganjang":"Ganjang (spicy soy sauce with chili)",
+    "menu.friedChicken.l.sub.Yangnyeom":"Yangnyeom(weet and spicy)",
+    "menu.items.Chicken-With-Boneless":"Korean Fried Chicken Boneless",
+    "menu.friedChicken.bl.sub.Original":"Original(without Sauce)",
+    "menu.friedChicken.bl.sub.Ganjang":"Ganjang (spicy soy sauce with chili)",
+    "menu.friedChicken.bl.sub.Yangnyeom":"Yangnyeom(weet and spicy)",
+
+
 
 
 

@@ -18,14 +18,21 @@ import kimchiJeonImg from "../assets/foodIMGs/Hankki  4. Kimchi-Jeon.jpg";
 import pajeonImg from "../assets/foodIMGs/Hankki  3. Haemul-Pajeon.jpg";
 import kimchiImg from "../assets/foodIMGs/Hankki  ig.jpg";
 import extraImg from "../assets/foodIMGs/Hankki_cover_2.jpg";
+import mainChickenMenu from "../assets/foodIMGs/Hankki_cover_2.jpg";
+import originalFriedChicken from "../assets/foodIMGs/Hankki  5a. Frittiertes Huhnchen Korean Fried Chicken original.jpg"
+import ganjangFriedChicken from "../assets/foodIMGs/Hankki  5. fried korean chicken Ganjang.jpg"
+import yangnyumFriedChicken from "../assets/foodIMGs/Hankki  5. fried chicken korean Yangnyum.jpg"
+
 
 export interface MenuVariant {
   id: string; // 내부 식별자 (예: "pork-tofu")
   labelKey: string; // 번역 키 (예: "menu.sub.porkTofu")
   price?: number; // 기본 가격과 다를 경우만 설정
+  image?: string;
+  spiciness?: number;
   vegetarian: boolean;
   halal: boolean;
-  allergens: string[];
+  allergens?: string[];
 }
 
 export interface MenuItem {
@@ -546,5 +553,84 @@ export const menuItems: MenuItem[] = [
       vegetarian: false,
       halal: false,
       allergens: []
-    }
+    },
+
+    // 31. Korean Fried Chicken with Bones - M
+    {
+    id: 31, 
+    nameKey: "menu.items.Chicken-With-Bone-half",
+    descKey: "",
+    category: "friedChicken",
+    price: 14,
+    image: mainChickenMenu,
+    spiciness: 0,
+    vegetarian: false,
+    halal: false,
+    allergens: ["A", "F", "N"],
+    includedKeys:["menu.items.friedChicken.included"],
+    variants: [
+      { id: "m-original", labelKey: "menu.friedchicken.m.sub.Original", price: 14, image: originalFriedChicken, vegetarian: false, halal: false, allergens: ["A", "F", "N"] },
+      { id: "m-yangnyeom", labelKey: "menu.friedchicken.m.sub.Ganjang", price: 15, image: ganjangFriedChicken, spiciness:1, vegetarian: false, halal: false, allergens: ["A", "F", "N", "L"] },
+      { id: "m-ganjang", labelKey: "menu.friedchicken.m.sub.Yangnyeom", price: 15, image: yangnyumFriedChicken, spiciness:2, vegetarian: false, halal: false, allergens: ["A", "F", "N", "L"] }
+    ]
+  },
+  // 32.  Korean Fried Chicken with Bones - L
+  {
+    id: 32, 
+    nameKey: "menu.items.Chicken-With-Bone-L",
+    descKey: "",
+    category: "friedChicken",
+    price: 24.5, 
+    image: mainChickenMenu,
+    spiciness: 0,
+    vegetarian: false,
+    halal: false,
+    allergens: ["A", "F", "N"],
+    includedKeys:["menu.items.friedChicken.included"],
+    variants: [
+      { id: "l-original", labelKey: "menu.friedChicken.l.sub.Original", image:originalFriedChicken, vegetarian: false, halal: false, allergens: ["A", "F", "N"] },
+      { id: "l-yangnyeom", labelKey: "menu.friedChicken.l.sub.Ganjang", spiciness:1, price: 25.5, image: ganjangFriedChicken, vegetarian: false, halal: false, allergens: ["A", "F", "N", "L"] },
+      { id: "l-ganjang", labelKey: "menu.friedChicken.l.sub.Yangnyeom", spiciness:2, price: 25.5, image: yangnyumFriedChicken, vegetarian: false, halal: false, allergens: ["A", "F", "N", "L"] }
+    ]
+  },
+
+  // 33. Korean Fried Chicken Boneless 
+    {
+    id: 33, 
+    nameKey: "menu.items.Chicken-With-Boneless",
+    descKey: "",
+    category: "friedChicken",
+    price: 24, 
+    image: mainChickenMenu,
+    spiciness: 0,
+    vegetarian: false,
+    halal: false,
+    allergens: ["A", "F", "N"],
+    includedKeys:["menu.items.friedChicken.included"],
+    variants: [
+      { id: "bl-original", labelKey: "menu.friedChicken.bl.sub.Original", image:originalFriedChicken, vegetarian: false, halal: false, allergens: ["A", "F", "N"],},
+      { id: "bl-yangnyeom", labelKey: "menu.friedChicken.bl.sub.Ganjang", spiciness:1, price: 25, image: ganjangFriedChicken, vegetarian: false, halal: false,allergens: ["A", "F", "N"], },
+      { id: "bl-ganjang", labelKey: "menu.friedChicken.bl.sub.Yangnyeom", spiciness:2, price: 25, image: yangnyumFriedChicken, vegetarian: false, halal: false, allergens: ["A", "F", "N"],},
+    ]
+  },
+
+  // 34. Korean Fried Chicken HalfHalf
+      {
+    id: 34, 
+    nameKey: "menu.items.Chicken-With-Boneless",
+    descKey: "",
+    category: "friedChicken",
+    price: 24, 
+    image: mainChickenMenu,
+    spiciness: 0,
+    vegetarian: false,
+    halal: false,
+    allergens: ["A", "F", "N"],
+    includedKeys:["menu.items.friedChicken.included"],
+    variants: [
+      { id: "bl-original", labelKey: "menu.friedChicken.bl.sub.Original", image:originalFriedChicken, vegetarian: false, halal: false, allergens: ["A", "F", "N"],},
+      { id: "bl-yangnyeom", labelKey: "menu.friedChicken.bl.sub.Ganjang", spiciness:1, price: 25, image: ganjangFriedChicken, vegetarian: false, halal: false,allergens: ["A", "F", "N"], },
+      { id: "bl-ganjang", labelKey: "menu.friedChicken.bl.sub.Yangnyeom", spiciness:2, price: 25, image: yangnyumFriedChicken, vegetarian: false, halal: false, allergens: ["A", "F", "N"],},
+    ]
+  },
 ];
