@@ -150,7 +150,7 @@ const handleSubmit = async (e: React.FormEvent) => {
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-stretch">
             {/* Left: Info */}
-            <ContactSection isVertical={true} />
+            <ContactSection isVertical={true} showTitle={false}/>
 
             {/* Right: Form */}
             <motion.div

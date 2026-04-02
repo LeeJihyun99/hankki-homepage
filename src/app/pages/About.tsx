@@ -69,15 +69,15 @@ export function About() {
         </div>
       </section>
 
-      {/* 3. Hansik Experience Section - 시각적으로 압도적인 섹션 */}
-      <section className="bg-black py-16"> {/* py-32에서 py-16으로 변경 */}
+      {/* 3. Hansik Experience Section */}
+      <section className="bg-black py-4">
         <div className="max-w-7xl mx-auto px-4">
           {/* Hansik Intro */}
           <motion.div initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
                 viewport={{ once: true }} className="text-center max-w-3xl mx-auto mb-20">
-            <h2 className="text-8xl sm:text-9xl lg:text-[10rem] font-bold text-white/5 pointer-events-none select-none">Hansik</h2>
+            <h2 className="text-8xl sm:text-9xl lg:text-[10rem] font-bold text-white/8 pointer-events-none select-none">Hansik</h2>
             <h3 className="text-3xl sm:text-4xl font-bold mb-6">{t("about.hansikTitle")}</h3>
             <p className="text-zinc-400 text-lg">{t("about.hansikText")}</p>
           </motion.div>

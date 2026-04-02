@@ -95,43 +95,42 @@ export function Layout() {
                 </Link>
               ))}
               
-              {/* Language Selector */}
-              <div className="relative">
-                <button
-                  onClick={() => setLanguageDropdownOpen(!languageDropdownOpen)}
-                  className="flex items-center gap-2 bg-white rounded-full px-4 py-2 text-black text-sm font-medium hover:bg-white/90 transition-colors"
-                >
-                  {currentLanguageLabel}
-                  <ChevronDown size={16} />
-                </button>
-                
-                {languageDropdownOpen && (
-                  <>
-                    <div 
-                      className="fixed inset-0 z-10" 
-                      onClick={() => setLanguageDropdownOpen(false)}
-                    ></div>
-                    <div className="absolute right-0 mt-2 bg-black border border-white/20 rounded-2xl overflow-hidden shadow-xl z-20">
-                      {languages.map((lang) => (
+            {/* Language Selector */}
+            <div className="relative">
+              <button
+                onClick={() => setLanguageDropdownOpen(!languageDropdownOpen)}
+                className="flex items-center gap-2 bg-white rounded-full px-4 py-2 text-black text-sm font-medium hover:bg-white/90 transition-colors"
+              >
+                {currentLanguageLabel}
+                <ChevronDown size={16} />
+              </button>
+              
+              {languageDropdownOpen && (
+                <>
+                  <div 
+                    className="fixed inset-0 z-10" 
+                    onClick={() => setLanguageDropdownOpen(false)}
+                  ></div>
+                  <div className="absolute right-0 mt-2 bg-black border border-white/20 rounded-2xl overflow-hidden shadow-xl z-20 min-w-[120px]">
+                    {/* 현재 선택된 언어를 제외하고 렌더링 */}
+                    {languages
+                      .filter((lang) => lang.code !== language) 
+                      .map((lang) => (
                         <button
                           key={lang.code}
                           onClick={() => {
                             setLanguage(lang.code);
                             setLanguageDropdownOpen(false);
                           }}
-                          className={`block w-full text-left px-6 py-3 text-sm transition-colors ${
-                            language === lang.code
-                              ? "bg-white text-black"
-                              : "text-white hover:bg-white/10"
-                          }`}
+                          className="block w-full text-left px-6 py-3 text-sm text-white hover:bg-white/10 transition-colors"
                         >
                           {lang.label}
                         </button>
                       ))}
-                    </div>
-                  </>
-                )}
-              </div>
+                  </div>
+                </>
+              )}
+            </div>
             </div>
 
             {/* Mobile Menu Button */}
@@ -144,60 +143,59 @@ export function Layout() {
           </div>
         </div>
 
-        {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <div className="md:hidden bg-black/95 backdrop-blur-sm border-t border-white/10">
-            <div className="px-4 py-4 space-y-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={`block text-sm tracking-wider ${
-                    isActive(link.path)
-                      ? "text-white"
-                      : "text-white/60"
-                  }`}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {link.name}
-                </Link>
-              ))}
+      {/* Mobile Navigation */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-black/95 backdrop-blur-sm border-t border-white/10">
+          <div className="px-4 py-4 space-y-4">
+            {navLinks.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`block text-sm tracking-wider ${
+                  isActive(link.path)
+                    ? "text-white"
+                    : "text-white/80"
+                }`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {link.name}
+              </Link>
+            ))}
+            
+            {/* Mobile Language Selector */}
+            <div className="pt-4 border-t border-white/10">
+              <button
+                onClick={() => setLanguageDropdownOpen(!languageDropdownOpen)}
+                className="flex items-center gap-2 w-full bg-white rounded-full px-4 py-2 text-black text-sm font-medium"
+              >
+                {currentLanguageLabel}
+                <ChevronDown size={16} />
+              </button>
               
-              {/* Mobile Language Selector */}
-              <div className="pt-4 border-t border-white/10">
-                <button
-                  onClick={() => setLanguageDropdownOpen(!languageDropdownOpen)}
-                  className="flex items-center gap-2 w-full bg-white rounded-full px-4 py-2 text-black text-sm font-medium"
-                >
-                  {currentLanguageLabel}
-                  <ChevronDown size={16} />
-                </button>
-                
-                {languageDropdownOpen && (
-                  <div className="mt-2 space-y-2">
-                    {languages.map((lang) => (
+              {languageDropdownOpen && (
+                <div className="mt-2 space-y-2">
+                  {/* 현재 언어를 제외한 나머지 언어만 표시 */}
+                  {languages
+                    .filter((lang) => lang.code !== language)
+                    .map((lang) => (
                       <button
                         key={lang.code}
                         onClick={() => {
                           setLanguage(lang.code);
                           setLanguageDropdownOpen(false);
-                          setMobileMenuOpen(false);
+                          setMobileMenuOpen(false); // 언어 변경 후 메뉴 닫기
                         }}
-                        className={`block w-full text-left px-4 py-2 text-sm rounded-full transition-colors ${
-                          language === lang.code
-                            ? "bg-white text-black"
-                            : "text-white/60 hover:bg-white/10"
-                        }`}
+                        className="block w-full text-left px-4 py-2 text-sm rounded-full text-white/60 hover:bg-white/10 transition-colors"
                       >
                         {lang.label}
                       </button>
                     ))}
-                  </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
-        )}
+        </div>
+      )}
       </nav>
 
       {/* Main Content */}
@@ -214,27 +212,7 @@ export function Layout() {
               <p className="text-xs mt-1">{t("footer.tagline")}</p>
             </div>
             <div className="flex gap-4">
-              <a
-                href="#"
-                className="text-white/60 hover:text-white transition-colors"
-                aria-label="Instagram"
-              >
-                <Instagram size={20} />
-              </a>
-              <a
-                href="#"
-                className="text-white/60 hover:text-white transition-colors"
-                aria-label="Facebook"
-              >
-                <Facebook size={20} />
-              </a>
-              <a
-                href="#"
-                className="text-white/60 hover:text-white transition-colors"
-                aria-label="Twitter"
-              >
-                <Twitter size={20} />
-              </a>
+Impressum
             </div>
           </div>
         </div>

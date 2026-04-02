@@ -570,7 +570,7 @@ export const menuItems: MenuItem[] = [
     includedKeys:["menu.items.friedChicken.included"],
     variants: [
       { id: "m-original", labelKey: "menu.friedchicken.m.sub.Original", price: 14, image: originalFriedChicken, vegetarian: false, halal: false, allergens: ["A", "F", "N"] },
-      { id: "m-yangnyeom", labelKey: "menu.friedchicken.m.sub.Ganjang", price: 15, image: ganjangFriedChicken, spiciness:1, vegetarian: false, halal: false, allergens: ["A", "F", "N", "L"] },
+      { id: "m-yangnyeom", labelKey: "menu.friedchicken.m.sub.Ganjang", price: 15, image: ganjangFriedChicken, spiciness:3, vegetarian: false, halal: false, allergens: ["A", "F", "N", "L"] },
       { id: "m-ganjang", labelKey: "menu.friedchicken.m.sub.Yangnyeom", price: 15, image: yangnyumFriedChicken, spiciness:2, vegetarian: false, halal: false, allergens: ["A", "F", "N", "L"] }
     ]
   },
@@ -589,7 +589,7 @@ export const menuItems: MenuItem[] = [
     includedKeys:["menu.items.friedChicken.included"],
     variants: [
       { id: "l-original", labelKey: "menu.friedChicken.l.sub.Original", image:originalFriedChicken, vegetarian: false, halal: false, allergens: ["A", "F", "N"] },
-      { id: "l-yangnyeom", labelKey: "menu.friedChicken.l.sub.Ganjang", spiciness:1, price: 25.5, image: ganjangFriedChicken, vegetarian: false, halal: false, allergens: ["A", "F", "N", "L"] },
+      { id: "l-yangnyeom", labelKey: "menu.friedChicken.l.sub.Ganjang", spiciness:3, price: 25.5, image: ganjangFriedChicken, vegetarian: false, halal: false, allergens: ["A", "F", "N", "L"] },
       { id: "l-ganjang", labelKey: "menu.friedChicken.l.sub.Yangnyeom", spiciness:2, price: 25.5, image: yangnyumFriedChicken, vegetarian: false, halal: false, allergens: ["A", "F", "N", "L"] }
     ]
   },
@@ -609,7 +609,7 @@ export const menuItems: MenuItem[] = [
     includedKeys:["menu.items.friedChicken.included"],
     variants: [
       { id: "bl-original", labelKey: "menu.friedChicken.bl.sub.Original", image:originalFriedChicken, vegetarian: false, halal: false, allergens: ["A", "F", "N"],},
-      { id: "bl-yangnyeom", labelKey: "menu.friedChicken.bl.sub.Ganjang", spiciness:1, price: 25, image: ganjangFriedChicken, vegetarian: false, halal: false,allergens: ["A", "F", "N"], },
+      { id: "bl-yangnyeom", labelKey: "menu.friedChicken.bl.sub.Ganjang", spiciness:3, price: 25, image: ganjangFriedChicken, vegetarian: false, halal: false,allergens: ["A", "F", "N"], },
       { id: "bl-ganjang", labelKey: "menu.friedChicken.bl.sub.Yangnyeom", spiciness:2, price: 25, image: yangnyumFriedChicken, vegetarian: false, halal: false, allergens: ["A", "F", "N"],},
     ]
   },
@@ -630,7 +630,7 @@ export const menuItems: MenuItem[] = [
     variants: [
       { id: "bl-original", labelKey: "menu.friedChicken.blhh.sub.OY", spiciness:1, image:originalFriedChicken, vegetarian: false, halal: false, allergens: ["A", "F", "N"],},
       { id: "bl-yangnyeom", labelKey: "menu.friedChicken.blhh.sub.OG", spiciness:2, price: 25, image: ganjangFriedChicken, vegetarian: false, halal: false,allergens: ["A", "F", "N"], },
-      { id: "bl-ganjang", labelKey: "menu.friedChicken.blhh.sub.YG", spiciness:2, price: 26.50, image: yangnyumFriedChicken, vegetarian: false, halal: false, allergens: ["A", "F", "N"],},
+      { id: "bl-ganjang", labelKey: "menu.friedChicken.blhh.sub.YG", spiciness:3, price: 26.50, image: yangnyumFriedChicken, vegetarian: false, halal: false, allergens: ["A", "F", "N"],},
     ]
   },
 
@@ -650,7 +650,7 @@ export const menuItems: MenuItem[] = [
     variants: [
       { id: "bl-original", labelKey: "menu.friedChicken.bhh.sub.OY", spiciness:1, image:originalFriedChicken, vegetarian: false, halal: false, allergens: ["A", "F", "N"],},
       { id: "bl-yangnyeom", labelKey: "menu.friedChicken.bhh.sub.OG", spiciness:2, price: 25.50, image: ganjangFriedChicken, vegetarian: false, halal: false,allergens: ["A", "F", "N"], },
-      { id: "bl-ganjang", labelKey: "menu.friedChicken.bhh.sub.YG", spiciness:2, price: 27, image: yangnyumFriedChicken, vegetarian: false, halal: false, allergens: ["A", "F", "N"],},
+      { id: "bl-ganjang", labelKey: "menu.friedChicken.bhh.sub.YG", spiciness:3, price: 27, image: yangnyumFriedChicken, vegetarian: false, halal: false, allergens: ["A", "F", "N"],},
     ]
   },
 ];
