@@ -71,11 +71,22 @@ export function Layout() {
     <div className="min-h-screen bg-black text-white">
       {/* Navigation */}
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navbarBg} ${navbarShadow} ${!isHomePage || leftHero ? 'border-b border-white/10' : ''}`}>
-        <div className="w-full px-8 sm:px-8 md:px-8 lg:px-8">
-          <div className="flex justify-between items-center h-16 sm:h-20 max-w-none">
-            {/* Logo */}
-            <Link to="/" onClick={() => window.scrollTo(0, 0)} className="flex items-center">
-              <img src={logoIMG} alt="Hankki" className="h-10 sm:h-14" />
+        {/* 컨테이너: max-w를 설정하고 mx-auto로 중앙 정렬하여 로고가 너무 벽에 붙지 않게 조절 */}
+        <div className="max-w-9xl mx-auto px-6 sm:px-10 lg:px-18">
+          <div className="flex justify-between items-center h-20 sm:h-28 md:h-28">
+            
+            {/* Logo: h-단위를 키워 더 크게 표시 */}
+            <Link to="/" onClick={() => window.scrollTo(0, 0)} className="flex items-center group">
+              <img 
+                src={logoIMG} 
+                alt="Hankki" 
+                className="
+                h-12                 /* 기본 모바일 (0~639px) */
+                sm:h-16              /* 소형 태블릿 (640px~767px) */
+                md:h-18              /* 태블릿/노트북 (768px~1023px) */
+                lg:h-18 
+                object-contain transition-transform duration-300 group-hover:scale-105" 
+              />
             </Link>
 
             {/* Desktop Navigation */}
@@ -144,22 +155,20 @@ export function Layout() {
         </div>
 
       {/* Mobile Navigation */}
-      {mobileMenuOpen && (
-        <div className="md:hidden bg-black/95 backdrop-blur-sm border-t border-white/10">
-          <div className="px-4 py-4 space-y-4">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`block text-sm tracking-wider ${
-                  isActive(link.path)
-                    ? "text-white"
-                    : "text-white/80"
-                }`}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {link.name}
-              </Link>
+        {mobileMenuOpen && (    
+          <div className="md:hidden bg-black/95 backdrop-blur-md border-t border-white/10 animate-in fade-in slide-in-from-top-4">
+            <div className="px-8 py-8 space-y-6">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={`block text-lg tracking-widest ${
+                    isActive(link.path) ? "text-white font-bold" : "text-white/80"
+                  }`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {link.name}
+                </Link>
             ))}
             
             {/* Mobile Language Selector */}
